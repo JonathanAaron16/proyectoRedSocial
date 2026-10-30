@@ -1,0 +1,7 @@
+<div aria-live="polite">
+  @if (campo()().touched() && campo()().invalid()) {
+    @for (error of campo()().errors(); track error.kind) {
+      <div class="error-campo">{{ error.message }}</div>
+    }
+  }
+</div>

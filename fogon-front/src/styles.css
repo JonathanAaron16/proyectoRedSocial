@@ -1,0 +1,161 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ============ TEMA NOCHE (por defecto) ============ */
+:root {
+  color-scheme: dark;
+
+  --color-fondo: #1B1712;
+  --color-barra: #15120E;
+  --color-texto-barra: #F4EFE6;
+  --color-tarjeta: #241F18;
+  --color-tarjeta-alt: #2E2820;
+  --color-borde: #352E24;
+
+  --color-texto: #F4EFE6;
+  --color-texto-suave: #D9CFBF;
+  --color-texto-tenue: #B5AB9B;
+
+  --color-brasa: #F2711C;
+  --color-brasa-hover: #E0600E;
+  --color-brasa-suave: #3B2414;
+  --color-sobre-brasa: #1E2330;
+  --color-llama: #D6A337;
+  --color-error: #F2A3A3;
+
+  --color-input-fondo: #1B1712;
+  --color-input-borde: #4A4135;
+  --color-input-texto: #F4EFE6;
+
+  --fuente-titulos: 'Bricolage Grotesque', system-ui, sans-serif;
+  --fuente-texto: 'Inter', system-ui, sans-serif;
+
+  --radio-input: 8px;
+  --radio-tarjeta: 20px;
+  --radio-grande: 32px;
+  --radio-pildora: 9999px;
+}
+
+/* ============ TEMA CLARO ============ */
+:root[data-tema='claro'] {
+  color-scheme: light;
+
+  --color-fondo: #F7F6F3;
+  --color-tarjeta: #FFFFFF;
+  --color-tarjeta-alt: #F1EEE8;
+  --color-borde: #E7E4DE;
+
+  --color-texto: #1E2330;
+  --color-texto-suave: #3A3D49;
+  --color-texto-tenue: #5F5B53;
+
+  --color-brasa-suave: #FDE6D6;
+  --color-error: #780016;
+
+  --color-input-fondo: #FFFFFF;
+  --color-input-borde: #CFCAC0;
+  --color-input-texto: #1E2330;
+  /* la barra superior queda oscura en los dos temas */
+}
+
+/* ============ BASE ============ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+a { color: var(--color-brasa); }
+
+/* Foco visible para quien navega con teclado */
+:focus-visible {
+  outline: 3px solid var(--color-brasa);
+  outline-offset: 2px;
+}
+
+/* ============ BOTONES ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radio-pildora);
+  font-family: var(--fuente-texto);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-primario { background: var(--color-brasa); color: var(--color-sobre-brasa); }
+.btn-primario:hover:not(:disabled) { background: var(--color-brasa-hover); }
+
+.btn-secundario { background: transparent; border-color: var(--color-borde); color: var(--color-texto); }
+.btn-secundario:hover:not(:disabled) { background: var(--color-tarjeta-alt); }
+
+.btn-peligro { background: transparent; border-color: var(--color-error); color: var(--color-error); }
+
+/* ============ TARJETAS ============ */
+.tarjeta {
+  background: var(--color-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 20px;
+}
+
+/* Tarjeta color papel (login y registro): redefine las variables solo adentro */
+.tarjeta-papel {
+  --color-texto: #1E2330;
+  --color-texto-suave: #3A3D49;
+  --color-error: #780016;
+  --color-input-fondo: #FFFFFF;
+  --color-input-borde: #1E2330;
+  --color-input-texto: #1E2330;
+
+  background: #F4EFE6;
+  color: var(--color-texto);
+  border-radius: var(--radio-grande);
+  padding: 40px;
+}
+
+/* ============ FORMULARIOS ============ */
+.campo { display: flex; flex-direction: column; gap: 8px; }
+.campo label { font-size: 15px; font-weight: 600; }
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-input-borde);
+  border-radius: var(--radio-input);
+  background: var(--color-input-fondo);
+  color: var(--color-input-texto);
+  font-family: var(--fuente-texto);
+  font-size: 16px;
+}
+.campo .invalido { border: 2px solid var(--color-error); }
+
+.error-campo { font-size: 14px; font-weight: 500; color: var(--color-error); }
+
+/* Respeta a quien pidió menos animaciones en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
