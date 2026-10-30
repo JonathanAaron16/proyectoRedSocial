@@ -1,132 +1,305 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🔥 Fogón — Red social scout
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Trabajo Práctico 2 — Programación IV (A344).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Red social para scouts: cada persona comparte las bitácoras de sus salidas, campamentos y actividades, suma "leña" (me gusta) a las publicaciones de los demás y charla en "la ronda" (comentarios). La temática le da identidad propia: no es una copia de una red existente, sino un fogón digital donde se juntan las historias del movimiento.
 
-## Description
+- **URL del front:** _pendiente (Vercel)_
+- **URL del back:** _pendiente (Vercel)_
+- **Repositorio:** _pendiente_
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 1. Tecnologías
 
-```bash
-$ npm install
-```
+| Tecnología | Uso |
+|---|---|
+| **Angular** (standalone components) | Frontend |
+| **NestJS 12** (ESM) | Servidor propio con API REST |
+| **MongoDB Atlas** + **Mongoose** | Base de datos |
+| **@nestjs/config** | Variables de entorno (`.env`) |
+| **@nestjs/jwt** | Tokens JWT de 15 minutos |
+| **cookie-parser** | Lectura del token desde una cookie `httpOnly` |
+| **class-validator** + **class-transformer** | Validación de los datos que llegan a la API |
+| **bcryptjs** | Encriptación de contraseñas |
+| **Multer** (incluido en `@nestjs/platform-express`) | Recepción de archivos en memoria |
+| **Cloudinary** | Almacenamiento de imágenes (perfil y publicaciones) |
+| **Vercel** | Deploy del front y del back |
 
-## Compile and run the project
+> **Nota sobre `bcryptjs`:** se eligió en lugar de `bcrypt` porque es JavaScript puro. `bcrypt` compila código nativo al instalarse y puede fallar con Node 26 o en el entorno serverless de Vercel. La API es la misma (`hash` / `compare`).
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+## 2. Instalación y ejecución
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+### Back (`fogon-back`)
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+Crear un archivo `.env` en la raíz (hay un `.env.example` con los nombres):
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```
+MONGO_URL=mongodb+srv://usuario:clave@cluster.xxxxx.mongodb.net/fogon?retryWrites=true&w=majority
+JWT_SECRET=una-frase-larga-y-secreta
+FRONT_URL=http://localhost:4200
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+El servidor queda en `http://localhost:3000`.
 
-## Observability
+**Configuración necesaria en MongoDB Atlas:** en *Network Access* debe estar habilitado `0.0.0.0/0`, porque Vercel no tiene una IP fija.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+### Front (`fogon-front`)
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+_Pendiente._
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+---
 
-To add it to this project, run this and approve the code it prints at [observe.nestjs.com/link](https://observe.nestjs.com/link) - signing up for free if you have no account:
+## 3. Arquitectura del back
 
-```bash
-$ npx @nestjs/observe link
+### 3.1 Estructura de carpetas
+
+```
+src/
+├── main.ts                  # ValidationPipe (whitelist), cookieParser, CORS
+├── app.module.ts            # ConfigModule global + conexión a Mongo
+├── auth/
+│   ├── auth.module.ts       # JwtModule (15 min), importa usuarios e imágenes
+│   ├── auth.controller.ts   # registro, login, autorizar, cerrar-sesion
+│   ├── auth.service.ts      # lógica de registro, login y token
+│   ├── payload-token.ts     # forma del contenido del JWT
+│   ├── usuario-actual.decorator.ts
+│   ├── guards/auth.guard.ts # valida el token de la cookie
+│   └── dto/                 # registro.dto.ts, login.dto.ts
+├── usuarios/
+│   ├── usuarios.module.ts   # registra el schema y exporta el servicio
+│   ├── usuarios.service.ts  # crear, buscar, verificar duplicados
+│   ├── usuarios.controller.ts
+│   └── schemas/usuario.schema.ts
+├── imagenes/
+│   ├── imagenes.module.ts
+│   ├── imagenes.service.ts  # sube archivos a Cloudinary
+│   └── opciones-imagen.ts   # 2 MB, solo JPG / PNG / WEBP
+└── publicaciones/           # Sprint 2
 ```
 
-It installs `@nestjs/observe`, wires it into `AppModule` and `main.ts`, and writes the app key and secret into `.env`, which every `nest start` script (`start`, `start:dev`, `start:debug`) then loads. In production, set `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` in the environment instead.
+### 3.2 Capas y flujo
 
-Or do it by hand:
-
-```bash
-$ npm install @nestjs/observe
+```
+Cliente ──▶ main.ts ──▶ Controller ──▶ Service ──▶ Mongo / Cloudinary
+          (validación,   (recibe y      (lógica de
+           cookies, CORS) responde)      negocio)
 ```
 
-Then follow the [setup guide](https://docs.nestjs.com/observability/sdk) - it takes a single import and an app key.
+- **Controllers:** solo reciben la request y devuelven la respuesta con el status correcto.
+- **Services:** toda la lógica. `AuthService` no toca la base directamente: le pide a `UsuariosService` que cree o busque usuarios.
+- **Schemas:** definen cómo se guarda cada entidad en Mongo.
+- **DTOs:** definen qué datos acepta cada ruta y con qué reglas.
+- **Guards:** deciden si una request puede pasar.
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+### 3.3 Módulos
 
-## Resources
+| Módulo | Responsabilidad |
+|---|---|
+| `auth` | Registro, login, validación y cierre de sesión |
+| `usuarios` | Schema de usuario y acceso a la colección `usuarios`. En el Sprint 4: ABM para administradores |
+| `imagenes` | Subida de archivos a Cloudinary, reutilizada por auth y publicaciones |
+| `publicaciones` | Publicaciones, me gusta y comentarios (Sprints 2 y 3) |
 
-Check out a few resources that may come in handy when working with NestJS:
+### 3.4 Modelo de datos
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Usuario** (`usuarios`)
 
-## Support
+| Campo | Tipo | Detalle |
+|---|---|---|
+| `nombre`, `apellido` | string | Obligatorios |
+| `correo` | string | Único, en minúsculas |
+| `nombreUsuario` | string | Único, en minúsculas |
+| `password` | string | Hash de bcrypt, `select: false` (nunca se devuelve) |
+| `fechaNacimiento` | Date | Obligatoria |
+| `descripcion` | string | Hasta 200 caracteres |
+| `imagenPerfil` | string | URL de Cloudinary |
+| `perfil` | `'usuario'` \| `'administrador'` | Por defecto `'usuario'` |
+| `activo` | boolean | Por defecto `true` (baja lógica, Sprint 4) |
+| `createdAt`, `updatedAt` | Date | Automáticos (`timestamps`) |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 4. API
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Autenticación (`/auth`)
 
-## License
+| Ruta | Body | Respuesta correcta | Errores |
+|---|---|---|---|
+| `POST /auth/registro` | form-data: `nombre`, `apellido`, `correo`, `nombreUsuario`, `password`, `fechaNacimiento`, `descripcion`, `imagen` (archivo) | **201** + usuario + cookie `token` | 400 datos inválidos o falta imagen · 409 correo o usuario repetido · 413 imagen de más de 2 MB |
+| `POST /auth/login` | JSON: `identificador` (correo **o** usuario), `password` | **200** + usuario + cookie `token` | 400 campos vacíos · 401 credenciales incorrectas · 403 cuenta deshabilitada |
+| `POST /auth/autorizar` | — (usa la cookie) | **200** + datos del usuario | 401 sin sesión o token vencido/inválido |
+| `POST /auth/cerrar-sesion` | — | **204**, borra la cookie | — |
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+En ninguna respuesta viaja la contraseña.
+
+---
+
+## 5. Decisiones técnicas
+
+**1. Proyecto ESM (Nest 12).** El CLI de Nest 12 genera el proyecto con módulos ES: los imports de archivos propios terminan en `.js` aunque el archivo sea `.ts`. Los tipos que solo se usan como tipo (`HydratedDocument`, `Response`, `PayloadToken`) se importan con `import type`, porque el proyecto usa `isolatedModules` + `emitDecoratorMetadata`.
+
+**2. Conexión a Mongo con `forRootAsync`.** En la clase de cookies se usó `MongooseModule.forRoot(process.env.MONGO_URL!)`, que depende de que `ConfigModule` se cargue antes en el array de imports. Con `forRootAsync` + `ConfigService`, Nest espera a que la configuración esté lista. Lo mismo para `JwtModule.registerAsync`.
+
+**3. El schema de usuario vive en `usuarios`, no en `auth`.** `UsuariosModule` exporta su servicio y `AuthModule` lo importa (el mismo patrón de `exports: [AlumnoService]` de `nest1`). Así, cuando llegue el ABM de usuarios del Sprint 4, toda la lógica de usuarios está en un solo lugar.
+
+**4. Unicidad de correo y nombre de usuario.** El schema tiene `unique: true` + `lowercase` + `trim`, de modo que `Joni@Gmail.com ` y `joni@gmail.com` cuentan como el mismo correo. Antes de crear un usuario se verifica la disponibilidad (409 Conflict con un mensaje claro), y el error `11000` de Mongo también se traduce a 409 por si dos registros llegan al mismo tiempo.
+
+**5. `whitelist: true` en el `ValidationPipe`.** Descarta cualquier campo que no esté en el DTO. Sin esto, cualquiera podría registrarse mandando `perfil: "administrador"` desde Postman.
+
+**6. Contraseña con tres validaciones separadas.** Mínimo 8 caracteres, una mayúscula y un número, cada una con su propio mensaje, para que el usuario sepa exactamente qué le falta.
+
+**7. La contraseña nunca sale de la base.** `select: false` en el schema la excluye de todas las consultas; solo el login la pide con `.select('+password')`. Después de un `create`, `sinPassword()` la quita del objeto antes de responder.
+
+**8. Login por correo o nombre de usuario.** Un único campo `identificador` y una consulta con `$or`. Si el usuario no existe o la contraseña está mal, el mensaje es el mismo (401), para no revelar qué cuentas existen.
+
+**9. Status HTTP correctos.** El código de la clase usaba `throw new Error()`, que devuelve 500. Acá se usan las excepciones de Nest: 400 (`ValidationPipe`), 401 (`UnauthorizedException`), 403 (`ForbiddenException`), 409 (`ConflictException`), 413 (límite de Multer). El login devuelve 200 con `@HttpCode(HttpStatus.OK)`, porque no crea nada; el registro devuelve 201.
+
+**10. Token en cookie `httpOnly`.** Como en la clase de cookies, el token no viaja en el body sino en una cookie que el JavaScript del front no puede leer, lo que protege contra robo por XSS. Dura 15 minutos, igual que el JWT. Para borrarla, `cerrar-sesion` usa exactamente las mismas opciones con las que se creó (`opcionesCookie()`), porque si no coinciden el navegador la ignora.
+
+**11. Cookie `strict` + `secure`, como en la clase de cookies.** La cookie se configura igual en local y en producción: `httpOnly: true`, `secure: true`, `sameSite: 'strict'`. Funciona porque el navegador siempre ve al front y al back como el mismo sitio:
+- **En local**, `localhost:4200` y `localhost:3000` son el mismo sitio (el puerto no cuenta), y los navegadores aceptan cookies `secure` en `http://localhost`.
+- **En Vercel**, el front reenvía las llamadas `/api/...` al back con un *rewrite* (`vercel.json`), así que el navegador solo ve el dominio del front.
+Se descartó deployar con dos URLs y `sameSite: 'none'`: la cookie pasaría a ser de terceros, y Safari (iPhone y Mac) las bloquea por defecto, así que el login fallaría ahí. CORS usa `credentials: true` y el origen exacto del front (con credentials no se permite `*`); en local es necesario porque cambia el puerto.
+
+**12. El payload del JWT lleva el rol.** `sub` (id), `nombreUsuario` y `perfil`. El guard de administrador del Sprint 4 puede verificar el rol sin consultar la base.
+
+**13. `autorizar` vuelve a consultar la base.** La consigna pide devolver los datos del usuario, y además así una cuenta deshabilitada por el admin queda rechazada en el acto, aunque su token todavía no haya vencido.
+
+**14. Decorador `@UsuarioActual()`.** Un decorador de parámetro propio que devuelve el payload que el `AuthGuard` dejó en la request. Evita repetir `@Req() req` + `req.usuario` en cada ruta protegida.
+
+**15. Imágenes en Cloudinary, en memoria.** Vercel no tiene disco persistente, así que Multer guarda el archivo en memoria y se envía con `upload_stream`. Se aceptan solo JPG, PNG y WEBP de hasta 2 MB (Vercel corta las requests de más de 4,5 MB). El módulo `imagenes` y `opcionesImagen` se reutilizan en publicaciones.
+
+**16. Verificar antes de subir.** En el registro primero se comprueba que el correo y el usuario estén libres y recién después se sube la imagen. Si no, un registro duplicado dejaría una foto huérfana en Cloudinary.
+
+**17. Campos pensados para sprints futuros.** `activo` (baja lógica de usuarios, Sprint 4) y `timestamps` (estadísticas por rango de fechas, Sprint 4) se agregaron desde el Sprint 1 para no tener que migrar datos después.
+
+---
+
+## 6. Limitaciones conocidas
+
+- **Imagen de perfil obligatoria.** La consigna pide recibirla en el registro. Si se decidiera hacerla opcional, alcanza con usar una imagen por defecto subida a Cloudinary.
+- **Imágenes huérfanas en casos extremos.** Si dos personas se registran con el mismo correo en el mismo instante, la verificación previa puede pasar para ambas y una foto queda en Cloudinary sin usuario.
+- **Cuenta deshabilitada con token vigente.** `autorizar` la rechaza en el acto, pero otras rutas que solo usan el `AuthGuard` la dejarían pasar hasta que venza el token (máximo 15 minutos).
+
+---
+
+## 7. Estado del proyecto
+
+### 🟡 Sprint 1 — Registro, login y estructura
+
+**Back**
+- [x] Proyecto NestJS creado
+- [x] Módulos: Publicaciones, Autenticación, Usuarios
+- [x] Conexión a MongoDB Atlas
+- [x] Registro por POST: valida los datos y guarda el usuario
+- [x] Contraseña encriptada (bcryptjs)
+- [x] Imagen de perfil guardada en Cloudinary y su URL en la base
+- [x] Login por POST con correo o nombre de usuario
+- [x] Login compara la contraseña encriptada y devuelve todos los datos del usuario
+- [x] Correo y nombre de usuario únicos
+- [x] Perfil "usuario" por defecto, con opción "administrador"
+- [ ] Deploy en Vercel
+
+**Front**
+- [ ] Proyecto Angular creado
+- [ ] Pantallas: Registro, Login, Publicaciones, MiPerfil
+- [ ] Navegación entre componentes
+- [ ] Favicon propio
+- [ ] Login con validaciones (8 caracteres, una mayúscula, un número)
+- [ ] Registro con validaciones y todos los campos (incluido repetir contraseña y la imagen)
+- [ ] Modales propios en lugar de `alert()`
+- [ ] Deploy en Vercel
+
+### ⬜ Sprint 2 — Publicaciones y me gusta
+
+**Back**
+- [ ] Alta de publicación (título, mensaje, imagen opcional) relacionada al usuario
+- [ ] Baja lógica, solo por el autor o un administrador
+- [ ] Listado con orden por fecha o por me gusta, filtro por usuario, `offset` y `limit`
+- [ ] Dar me gusta (uno por usuario por publicación)
+- [ ] Quitar me gusta (solo si se había dado)
+
+**Front**
+- [ ] Listado ordenado por fecha, con opción por cantidad de me gusta
+- [ ] Paginación
+- [ ] Cada publicación es un componente
+- [ ] Dar y quitar me gusta
+- [ ] Eliminar mis propias publicaciones
+- [ ] Mi Perfil: todos los datos, foto y últimas 3 publicaciones con sus comentarios
+
+### ⬜ Sprint 3 — Comentarios y sesión
+
+**Back**
+- [ ] Comentarios: GET paginado (más recientes primero), POST con usuario y fecha, PUT con `modificado: true`
+- [x] JWT con usuario y rol, vencimiento a los 15 minutos, devuelto por cookie
+- [x] `POST /auth/autorizar`
+- [ ] `POST /auth/refrescar`
+
+**Front**
+- [ ] Página de publicación con sus comentarios y botón "cargar más"
+- [ ] Escribir y editar comentarios (con aviso de editado)
+- [ ] Token guardado por cookie al hacer login y registro
+- [ ] Pantalla de cargando con spinner que valida el token contra `autorizar`
+- [ ] Contador de 10 minutos con modal para extender la sesión
+- [ ] Redirección al login ante un 401
+
+### ⬜ Sprint 4 — Administración, estadísticas y PWA
+
+**Back**
+- [ ] Usuarios (solo administrador): listado, alta con elección de perfil, baja y alta lógica
+- [x] Login bloqueado para usuarios deshabilitados, con aviso
+- [ ] Estadísticas (solo administrador): publicaciones por usuario, comentarios y comentarios por publicación, en un rango de fechas
+
+**Front**
+- [ ] Botones de administrador para dar de baja cualquier publicación
+- [ ] Dashboard de usuarios con formulario de alta y radio buttons de perfil
+- [ ] Dashboard de estadísticas con gráficos de distintos tipos
+- [ ] PWA
+- [ ] 3 pipes propios
+- [ ] 3 directivas propias
+
+### ⬜ Sprint 5 — Perfiles públicos y nuevas estadísticas (recuperatorio)
+
+**Back**
+- [ ] Registro de ingresos, visitas al perfil y me gusta por día
+
+**Front**
+- [ ] Perfil de otros usuarios (datos y últimas 3 publicaciones), con acciones de administrador
+- [ ] Scroll infinito en publicaciones
+- [ ] Gráficos: ingresos por usuario, visitas a mi perfil, me gusta por día
+
+### ⬜ Sprint 6 — Guardados y compartidos (fecha de final)
+
+**Back**
+- [ ] Guardar y quitar una publicación de guardados
+- [ ] Compartir una publicación con otro usuario
+- [ ] Listado de publicaciones compartidas conmigo y quién las compartió
+- [ ] Nuevos ordenamientos: por veces guardada y por veces compartida
+
+**Front**
+- [ ] Guardar y quitar guardado, indicando el estado
+- [ ] Pantalla de guardados
+- [ ] Botón compartir con selección de usuario
+- [ ] Pantalla de compartidos, con quién compartió cada publicación
+- [ ] Nuevos ordenamientos
+
+---
+
+## 8. Pendientes de diseño
+
+- Agregar al perfil los campos scout opcionales `grupo` (grupo scout) y `rama` (Manada, Unidad, Caminantes, Rovers, Dirigente).
+- Definir la estructura de repositorios (front y back).

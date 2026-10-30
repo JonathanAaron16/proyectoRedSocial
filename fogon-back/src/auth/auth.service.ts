@@ -4,16 +4,26 @@ import { compare, hash } from 'bcryptjs';
 import { UsuariosService } from '../usuarios/usuarios.service.js';
 import { RegistroDto } from './dto/registro.dto.js';
 import { LoginDto } from './dto/login.dto.js';
+import { ImagenesService } from '../imagenes/imagenes.service.js';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
+    private readonly imagenesService: ImagenesService,
     private readonly jwtService: JwtService,
   ) {}
 
-  async registro(dto: RegistroDto) {
+  async registro(dto: RegistroDto, imagen: Express.Multer.File) {
+    await this.usuariosService.verificarDisponible(dto.correo, dto.nombreUsuario);
+
     const passwordEncriptada = await hash(dto.password, 10);
+    //const imagenPerfil = await this.imagenesService.subir(imagen, 'perfiles');
+
+    // Si no se sube una imagen, usar la imagen por defecto
+      const imagenPerfil = imagen
+    ? await this.imagenesService.subir(imagen, 'perfiles')
+    : process.env.IMAGEN_PERFIL_DEFECTO!;
 
     const usuario = await this.usuariosService.crear({
       nombre: dto.nombre,
@@ -23,6 +33,7 @@ export class AuthService {
       password: passwordEncriptada,
       fechaNacimiento: new Date(dto.fechaNacimiento),
       descripcion: dto.descripcion ?? '',
+      imagenPerfil,
     });
 
     return this.armarRespuesta(usuario);

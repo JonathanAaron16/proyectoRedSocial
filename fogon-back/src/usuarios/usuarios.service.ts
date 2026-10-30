@@ -26,6 +26,23 @@ export class UsuariosService {
       throw error;
     }
   }
+  
+  async verificarDisponible(correo: string, nombreUsuario: string) {
+    const correoNorm = correo.trim().toLowerCase();
+    const usuarioNorm = nombreUsuario.trim().toLowerCase();
+
+    const existente = await this.usuarioModel.findOne({
+      $or: [{ correo: correoNorm }, { nombreUsuario: usuarioNorm }],
+    });
+
+    if (existente) {
+      throw new ConflictException(
+        existente.correo === correoNorm
+          ? 'Ese correo ya está registrado'
+          : 'Ese nombre de usuario ya está en uso',
+      );
+    }
+  }
 
   // Busca por correo O por nombre de usuario, e incluye la contraseña (para comparar en el login)
   buscarParaLogin(identificador: string) {
