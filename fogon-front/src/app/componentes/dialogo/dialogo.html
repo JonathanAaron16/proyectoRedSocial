@@ -1,0 +1,14 @@
+<dialog #dialogo class="modal" [class.es-error]="modal.actual()?.tipo === 'error'"
+        (cancel)="alPresionarEscape($event)"
+        aria-labelledby="modal-titulo" aria-describedby="modal-mensaje">
+  @if (modal.actual(); as m) {
+    <h2 id="modal-titulo">{{ m.titulo }}</h2>
+    <p id="modal-mensaje">{{ m.mensaje }}</p>
+    <div class="acciones">
+      @if (m.textoCancelar) {
+        <button type="button" class="btn btn-secundario" (click)="modal.responder(false)">{{ m.textoCancelar }}</button>
+      }
+      <button type="button" class="btn btn-primario" (click)="modal.responder(true)" autofocus>{{ m.textoAceptar }}</button>
+    </div>
+  }
+</dialog>

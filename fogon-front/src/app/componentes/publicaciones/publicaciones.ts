@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Sesion } from '../../servicios/sesion';
 
 @Component({
   imports: [],
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
   templateUrl: './publicaciones.html',
 })
 export class Publicaciones {
+  sesion = inject(Sesion);
 }

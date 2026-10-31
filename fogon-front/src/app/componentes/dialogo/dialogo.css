@@ -1,0 +1,20 @@
+.modal {
+  width: min(440px, calc(100% - 32px));
+  padding: 28px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-tarjeta);
+  color: var(--color-texto);
+}
+.modal::backdrop { background: rgb(0 0 0 / 0.6); }
+
+.modal h2 { font-size: 22px; margin-bottom: 8px; }
+.modal.es-error h2 { color: var(--color-error); }
+
+.modal p {
+  margin: 0 0 24px;
+  color: var(--color-texto-suave);
+  white-space: pre-line;
+}
+
+.acciones { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; }

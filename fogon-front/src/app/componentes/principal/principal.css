@@ -1,3 +1,4 @@
+/* ============ BARRA SUPERIOR ============ */
 .barra {
   height: 72px;
   padding: 0 32px;
@@ -33,7 +34,9 @@
   justify-content: center;
   cursor: pointer;
 }
+.btn-icono:hover { background: #2E2820; }
 
+/* ============ ESTRUCTURA ============ */
 .contenedor {
   max-width: 1240px;
   margin: 0 auto;
@@ -44,6 +47,12 @@
   align-items: flex-start;
 }
 
+.contenido {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+
+/* ============ MENÚ LATERAL ============ */
 .nav-lateral {
   flex: 0 1 220px;
   display: flex;
@@ -51,7 +60,9 @@
   gap: 4px;
 }
 
-.nav-lateral a {
+/* Links y botones del menú se ven iguales */
+.nav-lateral a,
+.nav-lateral button {
   height: 44px;
   padding: 0 16px;
   border-radius: 12px;
@@ -61,22 +72,36 @@
   color: var(--color-texto-suave);
   font-weight: 500;
 }
-.nav-lateral a:hover { background: var(--color-tarjeta-alt); }
+
+/* Le saca al botón el aspecto de botón por defecto del navegador */
+.nav-lateral button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-lateral a:hover,
+.nav-lateral button:hover {
+  background: var(--color-tarjeta-alt);
+}
+
 .nav-lateral a.activo {
   background: var(--color-tarjeta-alt);
   color: var(--color-texto);
   font-weight: 600;
 }
-.nav-lateral a.tenue { color: var(--color-texto-tenue); }
+
+.nav-lateral .tenue {
+  color: var(--color-texto-tenue);
+}
 
 .nav-lateral hr {
   width: 100%;
   border: none;
   border-top: 1px solid var(--color-borde);
   margin: 12px 0;
-}
-
-.contenido {
-  flex: 999 1 560px;
-  min-width: 0;
 }

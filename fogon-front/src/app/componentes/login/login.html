@@ -38,7 +38,9 @@
       <app-errores-campo [campo]="loginForm.password" />
     </div>
 
-    <button type="submit" class="btn btn-primario btn-ancho">Entrar</button>
+  <button type="submit" class="btn btn-primario btn-ancho" [disabled]="enviando()">
+      {{ enviando() ? 'Entrando…' : 'Entrar' }}
+  </button>
 
     <p class="alternativa">¿Primera vez? <a routerLink="/registro">Sumate al fogón</a></p>
   </form>

@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Dialogo } from './componentes/dialogo/dialogo';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,Dialogo],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

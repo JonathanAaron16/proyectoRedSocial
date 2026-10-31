@@ -1,8 +1,12 @@
-import { Component, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink,Router } from '@angular/router';
 import { form, FormField, required, minLength, validate } from '@angular/forms/signals';
 import { ErroresCampo } from '../errores-campo/errores-campo';
 import { LoginData } from '../../models/login-data';
+import { Auth } from '../../servicios/auth';
+import { Sesion } from '../../servicios/sesion';
+import { Modal } from '../../servicios/modal';
+import { mensajeDeError } from '../../utils/mensaje-error';
 
 @Component({
   selector: 'app-login',
@@ -32,13 +36,29 @@ export class Login {
 
   mostrarPassword = signal(false);
 
-  entrar(event: Event) {
+  private auth = inject(Auth);
+  private sesion = inject(Sesion);
+  private modal = inject(Modal);
+  private router = inject(Router);
+
+  enviando = signal(false);
+
+  async entrar(event: Event) {
     event.preventDefault();
     if (this.loginForm().invalid()) {
       this.loginForm().markAsTouched();
       return;
     }
-    // Paso siguiente: enviar al back
-    console.log('Login válido:', this.modelo());
+
+    this.enviando.set(true);
+    try {
+      const usuario = await this.auth.login(this.modelo());
+      this.sesion.iniciar(usuario);
+      this.router.navigate(['/publicaciones']);
+    } catch (error) {
+      this.modal.error('No pudimos dejarte entrar', mensajeDeError(error));
+    } finally {
+      this.enviando.set(false);
+    }
   }
 }
