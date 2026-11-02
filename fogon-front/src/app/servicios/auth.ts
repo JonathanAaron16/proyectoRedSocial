@@ -13,6 +13,9 @@ export class Auth {
   login(datos: LoginData) {
     return firstValueFrom(this.http.post<Usuario>(`${this.url}/login`, datos));
   }
+  registro(datos: FormData) {
+    return firstValueFrom(this.http.post<Usuario>(`${this.url}/registro`, datos));
+  }
   autorizar() {
     return firstValueFrom(this.http.post<Usuario>(`${this.url}/autorizar`, {}));
   }

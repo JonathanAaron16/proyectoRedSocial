@@ -128,7 +128,7 @@ a { color: var(--color-brasa); }
   --color-input-fondo: #FFFFFF;
   --color-input-borde: #1E2330;
   --color-input-texto: #1E2330;
-
+  color-scheme: light;
   background: #F4EFE6;
   color: var(--color-texto);
   border-radius: var(--radio-grande);

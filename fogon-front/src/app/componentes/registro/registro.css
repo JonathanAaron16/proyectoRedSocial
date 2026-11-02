@@ -1,0 +1,143 @@
+/* Igual que el login: siempre de noche */
+.pantalla {
+  min-height: 100vh;
+  background: #1B1712;
+  color: #F4EFE6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 5% 64px;
+}
+
+.encabezado {
+  width: min(720px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #F4EFE6;
+  font-family: var(--fuente-titulos);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.encabezado h1 {
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.encabezado p {
+  margin: 0;
+  font-size: 18px;
+  color: #D9CFBF;
+}
+
+.formulario {
+  width: min(720px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fila-doble {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.campo-fecha { max-width: 280px; }
+
+.etiqueta { font-size: 15px; font-weight: 600; }
+.opcional { font-weight: 400; color: var(--color-texto-suave); }
+
+textarea { resize: vertical; }
+
+.pie-campo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.contador { margin-left: auto; font-size: 13px; color: var(--color-texto-suave); }
+
+/* ----- Imagen de perfil ----- */
+.subir-imagen { display: flex; align-items: center; gap: 20px; }
+
+.avatar-previa {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px dashed #A39E94;
+  background: #E7E0D3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.avatar-previa.con-error { border-color: var(--color-error); }
+.avatar-previa img { width: 100%; height: 100%; object-fit: cover; }
+
+.subir-texto { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.ayuda { font-size: 13px; color: var(--color-texto-suave); }
+
+.btn-secundario-papel {
+  background: transparent;
+  border-color: #1E2330;
+  color: #1E2330;
+}
+.btn-secundario-papel:hover { background: #E7E0D3; }
+
+/* Oculto a la vista, pero accesible con teclado y lector de pantalla */
+.oculto-visual {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+/* Cuando el input oculto tiene el foco, se marca el botón visible */
+.oculto-visual:focus-visible + label {
+  outline: 3px solid var(--color-brasa);
+  outline-offset: 2px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: -8px;
+}
+.check input { width: 18px; height: 18px; accent-color: #F2711C; }
+
+.btn-ancho { width: 100%; height: 54px; font-size: 17px; }
+
+.alternativa {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--color-texto-suave);
+}
+.alternativa a { color: #254F1A; font-weight: 600; }
+.botones-imagen { display: flex; align-items: center; gap: 8px; }
+
+.btn-texto {
+  background: transparent;
+  color: #1E2330;
+  text-decoration: underline;
+  padding: 0 12px;
+}
+.btn-texto:hover { background: #E7E0D3; }
