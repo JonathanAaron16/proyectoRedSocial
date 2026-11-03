@@ -1,1 +1,47 @@
-<h1>Mi perfil</h1>
+@if (sesion.usuario(); as u) {
+  <section class="tarjeta perfil">
+    <div class="cabecera">
+      @if (u.imagenPerfil) {
+        <img class="avatar" [src]="u.imagenPerfil" [alt]="'Foto de perfil de ' + u.nombre">
+      } @else {
+        <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
+      }
+      <div class="identidad">
+        <h1>{{ u.nombre }} {{ u.apellido }}</h1>
+        <p class="usuario">&#64;{{ u.nombreUsuario }}</p>
+        @if (u.perfil === 'administrador') {
+          <span class="insignia">Administrador</span>
+        }
+      </div>
+    </div>
+
+    @if (u.descripcion) {
+      <p class="descripcion">{{ u.descripcion }}</p>
+    } @else {
+      <p class="descripcion vacia">Todavía no escribiste una descripción.</p>
+    }
+
+    <dl class="datos">
+      <div>
+        <dt>Correo</dt>
+        <dd>{{ u.correo }}</dd>
+      </div>
+      <div>
+        <dt>Fecha de nacimiento</dt>
+        <dd>{{ u.fechaNacimiento | date: 'longDate' : 'UTC' }}</dd>
+      </div>
+      <div>
+        <dt>Miembro desde</dt>
+        <dd>{{ u.createdAt | date: 'MMMM y' }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="mis-publicaciones">
+    <h2>Mis últimas publicaciones</h2>
+    <div class="tarjeta vacio">
+      <p>Todavía no contaste ninguna historia en el fogón.</p>
+      <a routerLink="/publicaciones" class="btn btn-primario">Ir a las publicaciones</a>
+    </div>
+  </section>
+}

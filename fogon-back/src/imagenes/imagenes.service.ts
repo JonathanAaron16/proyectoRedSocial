@@ -18,7 +18,7 @@ export class ImagenesService {
       cloudinary.uploader
         .upload_stream({ folder: `fogon/${carpeta}` }, (error, resultado) => {
           if (error || !resultado) {
-            console.error('Error de Cloudinary:', error);
+            
             return reject(new InternalServerErrorException('No se pudo subir la imagen'));
           }
           resolve(resultado.secure_url);

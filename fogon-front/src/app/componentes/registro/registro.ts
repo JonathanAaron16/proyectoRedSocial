@@ -121,9 +121,6 @@ export class Registro implements OnDestroy {
 
   async registrarse(event: Event) {
     event.preventDefault();
-    console.log('Formulario inválido:', this.registroForm().invalid());
-    console.log('Error de imagen:', this.errorImagen());
-    console.log('Errores:', this.registroForm().errorSummary());
 
     if (this.registroForm().invalid() || this.errorImagen()) {
       this.registroForm().markAsTouched();

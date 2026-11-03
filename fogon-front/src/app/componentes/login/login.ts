@@ -21,17 +21,14 @@ export class Login {
     required(s.identificador, { message: 'Ingresá tu correo o nombre de usuario' });
 
     required(s.password, { message: 'Ingresá tu contraseña' });
-    minLength(s.password, 8, { message: 'Tiene que tener al menos 8 caracteres' });
-    validate(s.password, ({ value }) =>
-      value() && !/[A-Z]/.test(value())
-        ? { kind: 'mayuscula', message: 'Tiene que tener al menos una mayúscula' }
-        : null,
-    );
-    validate(s.password, ({ value }) =>
-      value() && !/\d/.test(value())
-        ? { kind: 'numero', message: 'Tiene que tener al menos un número' }
-        : null,
-    );
+   validate(s.password, ({ value }) => {
+      const password = value();
+      const valida = password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
+      return password && !valida
+        ? { kind: 'formato', message: 'La contraseña no es válida' }
+        : null;
+    });
+
   });
 
   mostrarPassword = signal(false);

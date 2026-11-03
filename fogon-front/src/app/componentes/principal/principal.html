@@ -8,6 +8,7 @@
     <span>Fogón</span>
   </a>
 
+  <div class="barra-acciones">
   <button type="button" class="btn-icono" (click)="tema.alternar()"
           [attr.aria-label]="tema.modo() === 'noche' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
     @if (tema.modo() === 'noche') {
@@ -23,6 +24,17 @@
       </svg>
     }
   </button>
+   <a routerLink="/mi-perfil" class="avatar-barra" aria-label="Mi perfil">
+      @if (sesion.usuario()?.imagenPerfil; as foto) {
+        <img [src]="foto" alt="">
+      } @else {
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D9CFBF" stroke-width="1.9"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>
+        </svg>
+      }
+    </a>
+  </div>
 </header>
 
 <div class="contenedor">

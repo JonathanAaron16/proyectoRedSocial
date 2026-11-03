@@ -1,0 +1,63 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 680px;
+}
+
+.perfil { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+
+.cabecera { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
+
+.avatar {
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-borde);
+}
+.avatar-iniciales {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-llama);
+  color: #1E2330;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.identidad { display: flex; flex-direction: column; gap: 4px; }
+.identidad h1 { font-size: 32px; font-weight: 800; }
+.usuario { margin: 0; font-size: 16px; color: var(--color-texto-tenue); }
+
+.insignia {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radio-pildora);
+  background: var(--color-brasa-suave);
+  color: var(--color-texto);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.descripcion { margin: 0; font-size: 17px; line-height: 1.55; color: var(--color-texto-suave); }
+.descripcion.vacia { font-style: italic; color: var(--color-texto-tenue); }
+
+.datos {
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-borde);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.datos dt { margin-bottom: 4px; font-size: 13px; color: var(--color-texto-tenue); }
+.datos dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.mis-publicaciones { display: flex; flex-direction: column; gap: 16px; }
+.mis-publicaciones h2 { font-size: 24px; font-weight: 700; }
+
+.vacio { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 28px; }
+.vacio p { margin: 0; color: var(--color-texto-suave); }

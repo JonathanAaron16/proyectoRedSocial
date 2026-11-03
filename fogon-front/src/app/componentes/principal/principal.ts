@@ -14,7 +14,7 @@ import { Modal } from '../../servicios/modal';
 export class Principal {
   tema = inject(Tema);
   private auth = inject(Auth);
-  private sesion = inject(Sesion);
+  sesion = inject(Sesion);
   private modal = inject(Modal);
   private router = inject(Router);
 
