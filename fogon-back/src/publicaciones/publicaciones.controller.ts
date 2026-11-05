@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PublicacionesService } from './publicaciones.service.js';
-import { CreatePublicacioneDto } from './dto/create-publicacione.dto.js';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto.js';
+import { CrearPublicacionDto } from './dto/crear-publicacion.dto.js';
+import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
+import { AuthGuard } from '../auth/guards/auth.guard.js';
+import { UsuarioActual } from '../auth/usuario-actual.decorator.js';
+import type { PayloadToken } from '../auth/payload-token.js';
+import { opcionesImagen } from '../imagenes/opciones-imagen.js';
 
 @Controller('publicaciones')
+@UseGuards(AuthGuard)
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
   @Post()
-  create(@Body() createPublicacioneDto: CreatePublicacioneDto) {
-    return this.publicacionesService.create(createPublicacioneDto);
+  @UseInterceptors(FileInterceptor('imagen', opcionesImagen))
+  crear(
+    @Body() dto: CrearPublicacionDto,
+    @UploadedFile() imagen: Express.Multer.File | undefined,
+    @UsuarioActual() usuario: PayloadToken,
+  ) {
+    return this.publicacionesService.crear(dto, usuario.sub, imagen);
   }
 
   @Get()
-  findAll() {
-    return this.publicacionesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicacioneDto: UpdatePublicacioneDto) {
-    return this.publicacionesService.update(+id, updatePublicacioneDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicacionesService.remove(+id);
+  listar(@Query() query: ListarPublicacionesDto, @UsuarioActual() usuario: PayloadToken) {
+    return this.publicacionesService.listar(query, usuario.sub);
   }
 }
