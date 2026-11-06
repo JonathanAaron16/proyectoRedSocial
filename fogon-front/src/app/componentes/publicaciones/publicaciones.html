@@ -1,1 +1,40 @@
-<h1>Hola, {{ sesion.usuario()?.nombre }}</h1>
+<div class="encabezado">
+  <h1>Publicaciones</h1>
+  <div class="selector-orden" role="group" aria-label="Ordenar publicaciones">
+    <button type="button" [class.activo]="orden() === 'fecha'" [attr.aria-pressed]="orden() === 'fecha'"
+            (click)="cambiarOrden('fecha')">Recientes</button>
+    <button type="button" [class.activo]="orden() === 'likes'" [attr.aria-pressed]="orden() === 'likes'"
+            (click)="cambiarOrden('likes')">Más leña</button>
+  </div>
+</div>
+
+@if (cargando()) {
+  <p class="estado" aria-live="polite">Juntando leña…</p>
+} @else if (error()) {
+  <div class="tarjeta estado-error">
+    <p>{{ error() }}</p>
+    <button type="button" class="btn btn-secundario" (click)="cargar()">Reintentar</button>
+  </div>
+} @else if (publicaciones().length === 0) {
+  <div class="tarjeta estado-vacio">
+    <p>Todavía no hay historias en el fogón. ¡Contá la primera!</p>
+  </div>
+} @else {
+  <div class="lista">
+    @for (publicacion of publicaciones(); track publicacion._id) {
+      <app-tarjeta-publicacion [publicacion]="publicacion" (eliminada)="alEliminar()" />
+    }
+  </div>
+
+  @if (totalPaginas() > 1) {
+    <nav class="paginacion" aria-label="Paginación">
+      <button type="button" class="btn btn-secundario" [disabled]="pagina() === 1" (click)="irAPagina(pagina() - 1)">
+        ← Anteriores
+      </button>
+      <span>Página {{ pagina() }} de {{ totalPaginas() }}</span>
+      <button type="button" class="btn btn-secundario" [disabled]="pagina() === totalPaginas()" (click)="irAPagina(pagina() + 1)">
+        Siguientes →
+      </button>
+    </nav>
+  }
+}

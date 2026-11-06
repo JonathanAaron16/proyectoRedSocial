@@ -16,7 +16,7 @@ export class AuthService {
 
   async registro(dto: RegistroDto, imagen: Express.Multer.File) {
     await this.usuariosService.verificarDisponible(dto.correo, dto.nombreUsuario);
-
+    // Encriptar la contraseña antes de guardarla en la base de datos    
     const passwordEncriptada = await hash(dto.password, 10);
     //const imagenPerfil = await this.imagenesService.subir(imagen, 'perfiles');
 

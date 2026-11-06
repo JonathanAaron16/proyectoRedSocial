@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Publicacion } from './schemas/publicacion.schema.js';
 import { CrearPublicacionDto } from './dto/crear-publicacion.dto.js';
 import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
 import { ImagenesService } from '../imagenes/imagenes.service.js';
+import type { PayloadToken } from '../auth/payload-token.js';
 
-// Datos del autor que viajan con cada publicación (nunca la contraseña ni el correo)
+
+// Datos del autor que viajan con cada publicación 
 const CAMPOS_AUTOR = 'nombre apellido nombreUsuario imagenPerfil';
 
 @Injectable()
@@ -68,5 +71,60 @@ export class PublicacionesService {
   private aRespuesta<T extends { likes?: unknown }>(publicacion: T, meGusta: boolean) {
     const { likes, ...resto } = publicacion;
     return { ...resto, meGusta };
+  }
+
+  async eliminar(id: Types.ObjectId, usuario: PayloadToken) {
+    const publicacion = await this.publicacionModel
+      .findOne({ _id: id, activo: true })
+      .select('autor')
+      .lean();
+
+    if (!publicacion) {
+      throw new NotFoundException('La publicación no existe');
+    }
+
+    const esAutor = publicacion.autor.toString() === usuario.sub;
+    if (!esAutor && usuario.perfil !== 'administrador') {
+      throw new ForbiddenException('Solo podés eliminar tus propias publicaciones');
+    }
+
+    await this.publicacionModel.updateOne({ _id: id }, { activo: false });
+  }
+
+  async darMeGusta(id: Types.ObjectId, usuarioId: string) {
+    const actualizada = await this.publicacionModel.findOneAndUpdate(
+      // Solo si está activa y el usuario TODAVÍA NO dio me gusta
+      { _id: id, activo: true, 'likes.usuario': { $ne: usuarioId } },
+      { $push: { likes: { usuario: usuarioId } }, $inc: { cantidadLikes: 1 } },
+      { returnDocument: 'after', projection: { cantidadLikes: 1 } },
+    );
+
+    if (!actualizada) {
+      await this.verificarQueExiste(id);
+      throw new ConflictException('Ya le diste me gusta a esta publicación');
+    }
+    return { cantidadLikes: actualizada.cantidadLikes, meGusta: true };
+  }
+
+  async quitarMeGusta(id: Types.ObjectId, usuarioId: string) {
+    const actualizada = await this.publicacionModel.findOneAndUpdate(
+      // Solo si está activa y el usuario SÍ había dado me gusta
+      { _id: id, activo: true, 'likes.usuario': usuarioId },
+      { $pull: { likes: { usuario: usuarioId } }, $inc: { cantidadLikes: -1 } },
+      { returnDocument: 'after', projection: { cantidadLikes: 1 } },
+    );
+
+    if (!actualizada) {
+      await this.verificarQueExiste(id);
+      throw new ConflictException('No le habías dado me gusta a esta publicación');
+    }
+    return { cantidadLikes: actualizada.cantidadLikes, meGusta: false };
+  }
+
+  private async verificarQueExiste(id: Types.ObjectId) {
+    const existe = await this.publicacionModel.exists({ _id: id, activo: true });
+    if (!existe) {
+      throw new NotFoundException('La publicación no existe');
+    }
   }
 }

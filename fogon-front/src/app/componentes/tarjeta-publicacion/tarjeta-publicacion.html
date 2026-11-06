@@ -1,0 +1,35 @@
+<article class="tarjeta publicacion">
+  <header class="cabecera">
+    @if (publicacion().autor.imagenPerfil) {
+      <img class="avatar" [src]="publicacion().autor.imagenPerfil" alt="">
+    } @else {
+      <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
+    }
+    <div class="autor">
+      <span class="nombre">{{ publicacion().autor.nombre }} {{ publicacion().autor.apellido }}</span>
+      <span class="meta">&#64;{{ publicacion().autor.nombreUsuario }} · {{ publicacion().createdAt | date: "d MMM y, HH:mm" }}</span>
+    </div>
+    @if (puedeEliminar()) {
+      <button type="button" class="btn btn-peligro btn-chico" (click)="eliminar()">Eliminar</button>
+    }
+  </header>
+
+  <h2 class="titulo">{{ publicacion().titulo }}</h2>
+  <p class="mensaje">{{ publicacion().mensaje }}</p>
+
+  @if (publicacion().imagen) {
+    <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" loading="lazy">
+  }
+
+  <footer class="acciones">
+    <button type="button" class="btn-lena" [class.activo]="meGusta()" [attr.aria-pressed]="meGusta()"
+            [disabled]="enviandoLike()" (click)="alternarMeGusta()"
+            [attr.aria-label]="meGusta() ? 'Quitar leña' : 'Sumar leña'">
+      <svg width="18" height="18" viewBox="0 0 24 24" [attr.fill]="meGusta() ? 'currentColor' : 'none'"
+           stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2.5c1.2 3.6 5 5.4 5 9.6a5 5 0 0 1-10 0c0-2.2 1.1-3.6 2.2-4.6.3 1.7 1.1 2.7 2.2 3C11 7.8 11.2 5 12 2.5z"/>
+      </svg>
+      <span>{{ cantidadLikes() }} {{ cantidadLikes() === 1 ? 'leño' : 'leños' }}</span>
+    </button>
+  </footer>
+</article>

@@ -44,26 +44,18 @@ export class AuthController {
   }
 
   @Post('cerrar-sesion')
+  // no_content: no devuelve nada, pero el status 204 indica que la operación fue exitosa
   @HttpCode(HttpStatus.NO_CONTENT)
   cerrarSesion(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('token', this.opcionesCookie());
   }
-//Para el navegador son dos sitios distintos, y con strict la cookie no viaja. Por eso puse 'none' en producción.
-//   private opcionesCookie(): CookieOptions {
-//     const produccion = process.env.NODE_ENV === 'production';
-//     return {
-//       httpOnly: true,
-//       secure: produccion,
-//       sameSite: produccion ? 'none' : 'lax',
-//       maxAge: 1000 * 60 * 15,
-//     };
-//   }
+// Configuración de la cookie que almacena el token JWT
   private opcionesCookie(): CookieOptions {
     return {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 15, 
+      maxAge: 1000 * 60 * 15,// 
     };
   }
 }

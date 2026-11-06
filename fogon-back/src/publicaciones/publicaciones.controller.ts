@@ -1,4 +1,9 @@
-import { Body, Controller, Get, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query,
+  UploadedFile, UseGuards, UseInterceptors,
+} from '@nestjs/common';
+import { ParseObjectIdPipe } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PublicacionesService } from './publicaciones.service.js';
 import { CrearPublicacionDto } from './dto/crear-publicacion.dto.js';
@@ -26,5 +31,21 @@ export class PublicacionesController {
   @Get()
   listar(@Query() query: ListarPublicacionesDto, @UsuarioActual() usuario: PayloadToken) {
     return this.publicacionesService.listar(query, usuario.sub);
+  }
+  
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  eliminar(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @UsuarioActual() usuario: PayloadToken) {
+    return this.publicacionesService.eliminar(id, usuario);
+  }
+
+  @Post(':id/me-gusta')
+  darMeGusta(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @UsuarioActual() usuario: PayloadToken) {
+    return this.publicacionesService.darMeGusta(id, usuario.sub);
+  }
+
+  @Delete(':id/me-gusta')
+  quitarMeGusta(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @UsuarioActual() usuario: PayloadToken) {
+    return this.publicacionesService.quitarMeGusta(id, usuario.sub);
   }
 }
