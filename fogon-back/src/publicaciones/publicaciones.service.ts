@@ -7,10 +7,9 @@ import { CrearPublicacionDto } from './dto/crear-publicacion.dto.js';
 import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
 import { ImagenesService } from '../imagenes/imagenes.service.js';
 import type { PayloadToken } from '../auth/payload-token.js';
+import { CAMPOS_AUTOR } from './constantes.js';
 
 
-// Datos del autor que viajan con cada publicación 
-const CAMPOS_AUTOR = 'nombre apellido nombreUsuario imagenPerfil';
 
 @Injectable()
 export class PublicacionesService {
@@ -46,16 +45,7 @@ export class PublicacionesService {
         .sort(orden)
         .skip(query.offset)
         .limit(query.limit)
-        .select({
-          titulo: 1,
-          mensaje: 1,
-          imagen: 1,
-          autor: 1,
-          cantidadLikes: 1,
-          createdAt: 1,
-          // De todo el array de likes, trae solo el del usuario actual (si existe)
-          likes: { $elemMatch: { usuario: new Types.ObjectId(usuarioId) } },
-        })
+        .select(this.camposPublicacion(usuarioId))
         .populate('autor', CAMPOS_AUTOR)
         .lean(),
       this.publicacionModel.countDocuments(filtro),
@@ -66,12 +56,40 @@ export class PublicacionesService {
       total,
     };
   }
+  
+  async obtener(id: Types.ObjectId, usuarioId: string) {
+    const publicacion = await this.publicacionModel
+      .findOne({ _id: id, activo: true })
+      .select(this.camposPublicacion(usuarioId))
+      .populate('autor', CAMPOS_AUTOR)
+      .lean();
+
+    if (!publicacion) {
+      throw new NotFoundException('La publicación no existe');
+    }
+    return this.aRespuesta(publicacion, (publicacion.likes?.length ?? 0) > 0);
+  }
 
   // Saca el array de likes y agrega "meGusta": si el usuario actual ya dio me gusta
   private aRespuesta<T extends { likes?: unknown }>(publicacion: T, meGusta: boolean) {
     const { likes, ...resto } = publicacion;
     return { ...resto, meGusta };
   }
+
+    // Campos que viajan al front. De los likes trae solo el del usuario actual, si existe.
+  private camposPublicacion(usuarioId: string) {
+    return {
+      titulo: 1,
+      mensaje: 1,
+      imagen: 1,
+      autor: 1,
+      cantidadLikes: 1,
+      cantidadComentarios: 1,
+      createdAt: 1,
+      likes: { $elemMatch: { usuario: new Types.ObjectId(usuarioId) } },
+    };
+  }
+
 
   async eliminar(id: Types.ObjectId, usuario: PayloadToken) {
     const publicacion = await this.publicacionModel

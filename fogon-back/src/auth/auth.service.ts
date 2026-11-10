@@ -72,5 +72,11 @@ export class AuthService {
     }
     return usuario;
   }
+  
+  async refrescar(id: string) {
+    // Reutiliza autorizar: si el usuario ya no existe o fue deshabilitado, responde 401
+    const usuario = await this.autorizar(id);
+    return this.armarRespuesta(this.usuariosService.sinPassword(usuario));
+  }
 
 }

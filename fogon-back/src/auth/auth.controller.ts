@@ -43,6 +43,15 @@ export class AuthController {
     return this.authService.autorizar(usuario.sub);
   }
 
+  @Post('refrescar')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  async refrescar(@UsuarioActual() usuario: PayloadToken, @Res({ passthrough: true }) res: Response) {
+    const { token, usuario: datos } = await this.authService.refrescar(usuario.sub);
+    res.cookie('token', token, this.opcionesCookie());
+    return datos;
+  }
+
   @Post('cerrar-sesion')
   // no_content: no devuelve nada, pero el status 204 indica que la operación fue exitosa
   @HttpCode(HttpStatus.NO_CONTENT)

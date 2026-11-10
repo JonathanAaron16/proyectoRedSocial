@@ -34,6 +34,9 @@ export class Publicacion {
 
   @Prop({ default: 0 })
   cantidadLikes: number;
+  
+  @Prop({ default: 0 })
+  cantidadComentarios: number;
 
   @Prop({ default: true })
   activo: boolean;

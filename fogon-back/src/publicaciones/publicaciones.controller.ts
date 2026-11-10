@@ -32,6 +32,11 @@ export class PublicacionesController {
   listar(@Query() query: ListarPublicacionesDto, @UsuarioActual() usuario: PayloadToken) {
     return this.publicacionesService.listar(query, usuario.sub);
   }
+
+  @Get(':id')
+  obtener(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @UsuarioActual() usuario: PayloadToken) {
+    return this.publicacionesService.obtener(id, usuario.sub);
+  }
   
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
