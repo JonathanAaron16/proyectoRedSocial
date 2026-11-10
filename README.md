@@ -77,6 +77,13 @@ Queda en `http://localhost:4200`.
 | POST | `/auth/login` | Login por correo o nombre de usuario |
 | POST | `/auth/autorizar` | Valida el token y devuelve el usuario |
 | POST | `/auth/cerrar-sesion` | Cierra la sesión |
+| GET | `/publicaciones` | Lista con `orden` (`fecha` / `likes`), `usuario`, `offset` y `limit` |
+| POST | `/publicaciones` | Crea una publicación (form-data, imagen opcional) |
+| DELETE | `/publicaciones/:id` | Baja lógica (autor o administrador) |
+| POST | `/publicaciones/:id/me-gusta` | Da me gusta |
+| DELETE | `/publicaciones/:id/me-gusta` | Quita me gusta |
+
+Todas las rutas de `/publicaciones` requieren sesión iniciada.
 
 ---
 
@@ -100,7 +107,24 @@ Queda en `http://localhost:4200`.
 - [x] Modales propios (sin `alert()`)
 - [x] Deploy en Vercel
 
-### ⬜ Sprint 2 — Publicaciones y me gusta
+### ✅ Sprint 2 — Publicaciones y me gusta
+
+**Back**
+- [x] Alta de publicación con título, mensaje e imagen opcional
+- [x] Baja lógica, solo por el autor o un administrador
+- [x] Listado con orden por fecha o me gusta, filtro por usuario, `offset` y `limit`
+- [x] Me gusta: uno por usuario por publicación
+- [x] Quitar me gusta, solo si se había dado
+
+**Front**
+- [x] Listado ordenado por fecha, con opción por cantidad de me gusta
+- [x] Paginación
+- [x] Cada publicación es un componente
+- [x] Dar y quitar me gusta
+- [x] Crear publicaciones y eliminar las propias
+- [x] Mi perfil con todos los datos, la foto y las últimas 3 publicaciones
+- [ ] Comentarios de las publicaciones en Mi perfil (llegan con el Sprint 3)
+
 ### ⬜ Sprint 3 — Comentarios y sesión
 ### ⬜ Sprint 4 — Administración, estadísticas y PWA
 ### ⬜ Sprint 5 — Perfiles públicos y nuevas estadísticas
