@@ -1,0 +1,56 @@
+@if (!abierto()) {
+  <button type="button" class="disparador" (click)="abrir()">
+    <span class="invitacion">¿Qué pasó en tu última salida?</span>
+    <span class="falso-boton">Escribir</span>
+  </button>
+} @else {
+  <form class="tarjeta formulario" (submit)="publicar($event)" novalidate>
+    <h2>Nueva historia</h2>
+
+    <div class="campo">
+      <label for="titulo">Título</label>
+      <input #campoTitulo id="titulo" type="text" [formField]="publicacionForm.titulo"
+             [class.invalido]="publicacionForm.titulo().touched() && publicacionForm.titulo().invalid()">
+      <app-errores-campo [campo]="publicacionForm.titulo" />
+    </div>
+
+    <div class="campo">
+      <label for="mensaje">Mensaje</label>
+      <textarea id="mensaje" rows="5" placeholder="Contá la historia: dónde fueron, qué pasó, qué aprendieron…"
+                [formField]="publicacionForm.mensaje"
+                [class.invalido]="publicacionForm.mensaje().touched() && publicacionForm.mensaje().invalid()"></textarea>
+      <div class="pie-campo">
+        <app-errores-campo [campo]="publicacionForm.mensaje" />
+        <small class="contador">{{ modelo().mensaje.length }}/2000</small>
+      </div>
+    </div>
+
+    <div class="campo">
+      <span class="etiqueta">Imagen <span class="opcional">(opcional)</span></span>
+      @if (vistaPrevia()) {
+        <img class="previa" [src]="vistaPrevia()" alt="Vista previa de la imagen">
+      }
+      <div class="botones-imagen">
+        <input #inputImagen id="imagen-publicacion" type="file" class="oculto-visual"
+               accept="image/jpeg,image/png,image/webp" (change)="elegirImagen($event)">
+        <label for="imagen-publicacion" class="btn btn-secundario">
+          {{ imagen() ? 'Cambiar imagen' : 'Agregar imagen' }}
+        </label>
+        @if (imagen() || errorImagen()) {
+          <button type="button" class="btn btn-secundario" (click)="quitarImagen()">Quitar</button>
+        }
+        <small class="ayuda">JPG, PNG o WEBP, hasta 2 MB</small>
+      </div>
+      @if (errorImagen()) {
+        <div class="error-campo" aria-live="polite">{{ errorImagen() }}</div>
+      }
+    </div>
+
+    <div class="acciones">
+      <button type="button" class="btn btn-secundario" (click)="cancelar()" [disabled]="enviando()">Cancelar</button>
+      <button type="submit" class="btn btn-primario" [disabled]="enviando()">
+        {{ enviando() ? 'Publicando…' : 'Publicar' }}
+      </button>
+    </div>
+  </form>
+}

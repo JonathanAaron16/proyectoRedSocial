@@ -7,9 +7,10 @@ import { Auth } from '../../servicios/auth';
 import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { validarImagen } from '../../utils/validar-imagen';
 
-const TIPOS_IMAGEN = ['image/jpeg', 'image/png', 'image/webp'];
-const MAX_IMAGEN = 2 * 1024 * 1024; // 2 MB, igual que el back
+// const TIPOS_IMAGEN = ['image/jpeg', 'image/png', 'image/webp'];
+// const MAX_IMAGEN = 2 * 1024 * 1024; // 2 MB, igual que el back
 
 @Component({
   selector: 'app-registro',
@@ -97,14 +98,9 @@ export class Registro implements OnDestroy {
 
     if (!archivo) return; // no eligió nada: está bien, es opcional
 
-    if (!TIPOS_IMAGEN.includes(archivo.type)) {
-      this.errorImagen.set('La imagen debe ser JPG, PNG o WEBP');
-      input.value = '';
-      return;
-    }
-    if (archivo.size > MAX_IMAGEN) {
-      this.errorImagen.set('La imagen no puede pesar más de 2 MB');
-      input.value = '';
+    var error = validarImagen(archivo);
+    if (error) {
+      this.errorImagen.set(error);
       return;
     }
 

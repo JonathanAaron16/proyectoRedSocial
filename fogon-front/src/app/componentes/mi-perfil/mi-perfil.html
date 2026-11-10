@@ -34,14 +34,32 @@
         <dt>Miembro desde</dt>
         <dd>{{ u.createdAt | date: 'MMMM y' }}</dd>
       </div>
+      <div>
+        <dt>Historias publicadas</dt>
+        <dd>{{ totalPublicaciones() }}</dd>
+      </div>
     </dl>
   </section>
 
-  <section class="mis-publicaciones">
+    <section class="mis-publicaciones">
     <h2>Mis últimas publicaciones</h2>
-    <div class="tarjeta vacio">
-      <p>Todavía no contaste ninguna historia en el fogón.</p>
-      <a routerLink="/publicaciones" class="btn btn-primario">Ir a las publicaciones</a>
-    </div>
+
+    @if (cargandoPublicaciones()) {
+      <p class="estado" aria-live="polite">Juntando leña…</p>
+    } @else if (errorPublicaciones()) {
+      <div class="tarjeta vacio">
+        <p>{{ errorPublicaciones() }}</p>
+        <button type="button" class="btn btn-secundario" (click)="cargarUltimas()">Reintentar</button>
+      </div>
+    } @else if (ultimas().length === 0) {
+      <div class="tarjeta vacio">
+        <p>Todavía no contaste ninguna historia en el fogón.</p>
+        <a routerLink="/publicaciones" class="btn btn-primario">Contar la primera</a>
+      </div>
+    } @else {
+      @for (publicacion of ultimas(); track publicacion._id) {
+        <app-tarjeta-publicacion [publicacion]="publicacion" (eliminada)="cargarUltimas()" />
+      }
+    }
   </section>
 }

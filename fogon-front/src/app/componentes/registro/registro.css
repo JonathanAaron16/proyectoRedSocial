@@ -98,20 +98,7 @@ textarea { resize: vertical; }
 }
 .btn-secundario-papel:hover { background: #E7E0D3; }
 
-/* Oculto a la vista, pero accesible con teclado y lector de pantalla */
-.oculto-visual {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-/* Cuando el input oculto tiene el foco, se marca el botón visible */
-.oculto-visual:focus-visible + label {
-  outline: 3px solid var(--color-brasa);
-  outline-offset: 2px;
-}
+
 
 .check {
   display: flex;

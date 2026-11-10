@@ -1,0 +1,51 @@
+.disparador {
+  width: 100%;
+  height: 60px;
+  padding: 0 8px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pildora);
+  background: var(--color-tarjeta);
+  font-family: inherit;
+  cursor: pointer;
+}
+.disparador:hover { border-color: var(--color-brasa); }
+
+.invitacion { font-size: 16px; color: var(--color-texto-tenue); }
+
+.falso-boton {
+  height: 44px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radio-pildora);
+  background: var(--color-brasa);
+  color: var(--color-sobre-brasa);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.formulario { display: flex; flex-direction: column; gap: 18px; }
+.formulario h2 { font-size: 22px; font-weight: 700; }
+
+textarea { resize: vertical; }
+
+.pie-campo { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.contador { margin-left: auto; font-size: 13px; color: var(--color-texto-tenue); }
+
+.etiqueta { font-size: 15px; font-weight: 600; }
+.opcional { font-weight: 400; color: var(--color-texto-tenue); }
+
+.previa {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.botones-imagen { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.ayuda { font-size: 13px; color: var(--color-texto-tenue); }
+
+.acciones { display: flex; justify-content: flex-end; gap: 12px; }

@@ -3,12 +3,13 @@ import { TarjetaPublicacion } from '../tarjeta-publicacion/tarjeta-publicacion';
 import { Publicaciones as PublicacionesService } from '../../servicios/publicaciones';
 import { OrdenPublicaciones, Publicacion } from '../../models/publicacion';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { NuevaPublicacion } from '../nueva-publicacion/nueva-publicacion';
 
 const POR_PAGINA = 5;
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [TarjetaPublicacion],
+  imports: [TarjetaPublicacion, NuevaPublicacion],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -69,6 +70,14 @@ export class Publicaciones {
     if (this.publicaciones().length === 1 && this.pagina() > 1) {
       this.pagina.update((p) => p - 1);
     }
+    
     this.cargar();
   }
+
+  alCrear() {
+       // La nueva publicación es la más reciente: la mostramos arriba de todo
+       this.orden.set('fecha');
+       this.pagina.set(1);
+       this.cargar();
+     }
 }

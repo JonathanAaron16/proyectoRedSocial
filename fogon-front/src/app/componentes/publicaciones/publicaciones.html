@@ -1,4 +1,5 @@
 <div class="encabezado">
+  
   <h1>Publicaciones</h1>
   <div class="selector-orden" role="group" aria-label="Ordenar publicaciones">
     <button type="button" [class.activo]="orden() === 'fecha'" [attr.aria-pressed]="orden() === 'fecha'"
@@ -7,6 +8,7 @@
             (click)="cambiarOrden('likes')">Más leña</button>
   </div>
 </div>
+<app-nueva-publicacion (creada)="alCrear()" />
 
 @if (cargando()) {
   <p class="estado" aria-live="polite">Juntando leña…</p>
