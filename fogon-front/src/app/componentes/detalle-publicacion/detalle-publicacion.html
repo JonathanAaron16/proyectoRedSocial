@@ -1,0 +1,50 @@
+<a routerLink="/publicaciones" class="volver">← Volver a las publicaciones</a>
+
+@if (cargando()) {
+  <p class="estado" aria-live="polite">Juntando leña…</p>
+} @else if (error()) {
+  <div class="tarjeta estado-error">
+    <p>{{ error() }}</p>
+    <a routerLink="/publicaciones" class="btn btn-secundario">Ver otras historias</a>
+  </div>
+} @else if (publicacion(); as p) {
+  <app-tarjeta-publicacion [publicacion]="p" [enDetalle]="true" (eliminada)="alEliminar()" />
+
+  <section class="ronda" aria-labelledby="titulo-ronda">
+    <h2 id="titulo-ronda">La ronda <span class="cantidad">({{ totalComentarios() }})</span></h2>
+
+    <form class="tarjeta nuevo-comentario" (submit)="comentar($event)" novalidate>
+      <div class="campo">
+        <label for="nuevo-comentario" class="oculto-visual">Escribí un comentario</label>
+        <textarea id="nuevo-comentario" rows="3" placeholder="Sumate a la ronda…"
+                  [value]="nuevoComentario()" (input)="nuevoComentario.set($any($event.target).value)"
+                  [class.invalido]="intentoEnviar() && errorNuevo()"></textarea>
+      </div>
+      <div class="pie">
+        @if (intentoEnviar() && errorNuevo()) {
+          <span class="error-campo">{{ errorNuevo() }}</span>
+        }
+        <small class="contador">{{ nuevoComentario().length }}/500</small>
+        <button type="submit" class="btn btn-primario" [disabled]="enviando()">
+          {{ enviando() ? 'Enviando…' : 'Comentar' }}
+        </button>
+      </div>
+    </form>
+
+    @if (comentarios().length === 0) {
+      <p class="estado">Todavía nadie se sumó a la ronda. ¡Sé el primero!</p>
+    } @else {
+      <div class="lista">
+        @for (comentario of comentarios(); track comentario._id) {
+          <app-comentario-item [comentario]="comentario" (editado)="alEditar($event)" />
+        }
+      </div>
+
+      @if (hayMas()) {
+        <button type="button" class="btn btn-secundario cargar-mas" (click)="cargarMas()" [disabled]="cargandoMas()">
+          {{ cargandoMas() ? 'Cargando…' : 'Cargar más comentarios' }}
+        </button>
+      }
+    }
+  </section>
+}

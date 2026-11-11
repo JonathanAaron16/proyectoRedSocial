@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
+      // Verifica el token y lo decodifica, asignando el resultado a request.usuario
       request.usuario = await this.jwtService.verifyAsync<PayloadToken>(token);
     } catch {
       throw new UnauthorizedException('La sesión expiró o no es válida');

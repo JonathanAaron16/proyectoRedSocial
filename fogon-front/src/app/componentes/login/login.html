@@ -17,6 +17,10 @@
   <form class="tarjeta-papel formulario" (submit)="entrar($event)" novalidate>
     <h2>Entrá al fogón</h2>
 
+    @if (motivo() === 'sesion-vencida') {
+      <p class="aviso" role="status">Tu sesión venció. Volvé a ingresar para seguir.</p>
+    }
+    
     <div class="campo">
       <label for="identificador">Correo o nombre de usuario</label>
       <input id="identificador" type="text" autocomplete="username"

@@ -39,4 +39,8 @@ export class Publicaciones {
   quitarMeGusta(id: string) {
     return firstValueFrom(this.http.delete<EstadoMeGusta>(`${this.url}/${id}/me-gusta`));
   }
+  
+  obtener(id: string) {
+    return firstValueFrom(this.http.get<Publicacion>(`${this.url}/${id}`));
+  }
 }

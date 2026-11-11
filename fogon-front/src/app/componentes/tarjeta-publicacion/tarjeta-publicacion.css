@@ -131,3 +131,26 @@
 .btn-lena.activo { background: var(--color-brasa-suave); border-color: var(--color-brasa); }
 .btn-lena.activo svg { color: var(--color-brasa); }
 .btn-lena:disabled { opacity: 0.6; cursor: wait; }
+
+.titulo a { color: inherit; text-decoration: none; }
+.titulo a:hover { text-decoration: underline; }
+
+.btn-ronda {
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radio-pildora);
+  color: var(--color-texto-suave);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+.btn-ronda:hover { background: var(--color-tarjeta-alt); }
+
+/* En la página de la publicación, se ve "grande" */
+.grande { padding: 28px; }
+.grande .titulo { font-size: 32px; font-weight: 800; }
+.grande .mensaje { font-size: 18px; }
+.grande .imagen { max-height: none; }

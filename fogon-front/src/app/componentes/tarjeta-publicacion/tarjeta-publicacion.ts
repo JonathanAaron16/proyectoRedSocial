@@ -5,10 +5,10 @@ import { Publicaciones } from '../../servicios/publicaciones';
 import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-tarjeta-publicacion',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './tarjeta-publicacion.html',
   styleUrl: './tarjeta-publicacion.css',
 })
@@ -18,6 +18,7 @@ export class TarjetaPublicacion {
   private modal = inject(Modal);
 
   publicacion = input.required<Publicacion>();
+  enDetalle = input(false);
   eliminada = output<string>();
 
   // Arrancan con lo que vino del back y se actualizan al dar o quitar me gusta

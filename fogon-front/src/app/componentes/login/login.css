@@ -14,9 +14,23 @@
 .presentacion {
   flex: 1 1 420px;
   max-width: 620px;
+  min-height: 560px;
+  padding: 48px;
+  border-radius: var(--radio-grande);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 24px;
+  background:
+    linear-gradient(to top, rgb(27 23 18 / 0.95) 0%, rgb(27 23 18 / 0.6) 50%, rgb(27 23 18 / 0.2) 100%),
+    url('/fogon-login.jpg') center / cover no-repeat;
+}
+
+@media (max-width: 700px) {
+  .presentacion {
+    min-height: 420px;
+    padding: 32px 24px;
+  }
 }
 
 .presentacion h1 {
@@ -87,3 +101,12 @@
   color: var(--color-texto-suave);
 }
 .alternativa a { color: #254F1A; font-weight: 600; }
+
+.aviso {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--radio-input);
+  background: #FDE6D6;
+  color: #1E2330;
+  font-size: 15px;
+}

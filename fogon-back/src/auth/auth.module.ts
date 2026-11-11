@@ -15,7 +15,7 @@ import { ImagenesModule } from '../imagenes/imagenes.module.js';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: 60 * 15 }, // 15 minutos, en segundos
+        signOptions: { expiresIn: 60 * 2 }, // 15 minutos, en segundos
       }),
     }),
   ],

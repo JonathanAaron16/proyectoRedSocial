@@ -1,0 +1,49 @@
+/* Como el login: siempre de noche */
+.pantalla {
+  min-height: 100vh;
+  background: #1B1712;
+  color: #D9CFBF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 17px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #3A3328;
+  border-top-color: #F2711C;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}/* Como el login: siempre de noche */
+.pantalla {
+  min-height: 100vh;
+  background: #1B1712;
+  color: #D9CFBF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 17px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #3A3328;
+  border-top-color: #F2711C;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}

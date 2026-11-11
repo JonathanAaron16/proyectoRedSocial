@@ -19,6 +19,9 @@ export class Auth {
   autorizar() {
     return firstValueFrom(this.http.post<Usuario>(`${this.url}/autorizar`, {}));
   }
+  refrescar() {
+    return firstValueFrom(this.http.post<Usuario>(`${this.url}/refrescar`, {}));
+  }
   cerrarSesion() {
     return firstValueFrom(this.http.post<void>(`${this.url}/cerrar-sesion`, {}));
   }

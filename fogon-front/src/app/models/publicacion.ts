@@ -13,6 +13,7 @@ export interface Publicacion {
   imagen: string;
   autor: AutorPublicacion;
   cantidadLikes: number;
+  cantidadComentarios?: number;//? porque las publicaciones creadas antes del Sprint 3 no tienen ese campo en la base.
   meGusta: boolean;
   createdAt: string;
 }

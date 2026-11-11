@@ -1,0 +1,44 @@
+<article class="comentario">
+  @if (comentario().autor.imagenPerfil) {
+    <img class="avatar" [src]="comentario().autor.imagenPerfil" alt="">
+  } @else {
+    <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
+  }
+
+  <div class="cuerpo">
+    <div class="cabecera">
+      <div class="autor">
+        <span class="nombre">{{ comentario().autor.nombre }} {{ comentario().autor.apellido }}</span>
+        <span class="meta">
+          &#64;{{ comentario().autor.nombreUsuario }} · {{ comentario().createdAt | date: "d MMM y, HH:mm" }}
+          @if (comentario().modificado) {
+            · <span class="editado">editado</span>
+          }
+        </span>
+      </div>
+      @if (puedeEditar() && !editando()) {
+        <button type="button" class="btn-texto" (click)="empezarEdicion()">Editar</button>
+      }
+    </div>
+
+    @if (editando()) {
+      <div class="campo">
+        <label class="oculto-visual" [attr.for]="'editar-' + comentario()._id">Editar comentario</label>
+        <textarea [id]="'editar-' + comentario()._id" rows="3" [value]="texto()"
+                  (input)="texto.set($any($event.target).value)"
+                  [class.invalido]="errorTexto()"></textarea>
+        @if (errorTexto()) {
+          <span class="error-campo">{{ errorTexto() }}</span>
+        }
+      </div>
+      <div class="acciones">
+        <button type="button" class="btn btn-secundario" (click)="cancelar()" [disabled]="guardando()">Cancelar</button>
+        <button type="button" class="btn btn-primario" (click)="guardar()" [disabled]="guardando() || errorTexto()">
+          {{ guardando() ? 'Guardando…' : 'Guardar' }}
+        </button>
+      </div>
+    } @else {
+      <p class="mensaje">{{ comentario().mensaje }}</p>
+    }
+  </div>
+</article>

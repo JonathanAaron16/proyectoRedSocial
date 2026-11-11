@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal,input } from '@angular/core';
 import { RouterLink,Router } from '@angular/router';
 import { form, FormField, required, minLength, validate } from '@angular/forms/signals';
 import { ErroresCampo } from '../errores-campo/errores-campo';
@@ -16,7 +16,8 @@ import { mensajeDeError } from '../../utils/mensaje-error';
 })
 export class Login {
   modelo = signal<LoginData>({ identificador: '', password: '' });
-
+  motivo = input<string>(); // viene de la URL: /login?motivo=sesion-vencida
+  
   loginForm = form(this.modelo, (s) => {
     required(s.identificador, { message: 'Ingresá tu correo o nombre de usuario' });
 
