@@ -15,16 +15,15 @@ export class Cargando implements OnInit {
 
   volver = input<string>(); // viene de la URL: /cargando?volver=/mi-perfil
 
-  async ngOnInit() {
-    try {
-      const usuario = await this.auth.autorizar();
-      this.sesion.iniciar(usuario);
-      this.router.navigateByUrl(this.destino(), { replaceUrl: true });
-    } catch {
-      this.router.navigate(['/login'], { replaceUrl: true });
-    }
+ async ngOnInit() {
+  try {
+    const respuesta  = await this.auth.autorizar();        // POST /auth/autorizar
+    this.sesion.iniciar(respuesta);
+    this.router.navigateByUrl(this.destino(), { replaceUrl: true });   // válido → publicaciones (o a donde ibas)
+  } catch {
+    this.router.navigate(['/login'], { replaceUrl: true });            // no válido → login
   }
-
+}
   // Solo rutas internas de la app: evita que alguien arme un link que redirija a otro sitio
   private destino() {
     const volver = this.volver();

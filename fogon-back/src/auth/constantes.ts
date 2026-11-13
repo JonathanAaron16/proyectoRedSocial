@@ -1,0 +1,1 @@
+export const DURACION_SESION_SEGUNDOS = 60 * 6; // 15 minutos

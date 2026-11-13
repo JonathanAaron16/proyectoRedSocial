@@ -5,6 +5,7 @@ import { UsuariosService } from '../usuarios/usuarios.service.js';
 import { RegistroDto } from './dto/registro.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { ImagenesService } from '../imagenes/imagenes.service.js';
+import { DURACION_SESION_SEGUNDOS } from './constantes.js';
 
 @Injectable()
 export class AuthService {
@@ -62,7 +63,7 @@ export class AuthService {
       perfil: usuario.perfil,
     };
     const token = await this.jwtService.signAsync(payload);
-    return { token, usuario };
+    return { token, usuario, expiraEnSegundos: DURACION_SESION_SEGUNDOS };
   }
 
   async autorizar(id: string) {

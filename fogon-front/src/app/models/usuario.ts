@@ -12,3 +12,8 @@ export interface Usuario {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface RespuestaSesion {
+  usuario: Usuario;
+  expiraEnSegundos: number;
+}

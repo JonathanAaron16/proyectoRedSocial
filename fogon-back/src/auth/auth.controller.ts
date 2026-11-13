@@ -8,6 +8,7 @@ import { UsuarioActual } from './usuario-actual.decorator.js';
 import type { PayloadToken } from './payload-token.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { opcionesImagen } from '../imagenes/opciones-imagen.js';
+import { DURACION_SESION_SEGUNDOS } from './constantes.js';
 
 @Controller('auth')
 export class AuthController {
@@ -23,33 +24,36 @@ export class AuthController {
     // if (!imagen) {
     //   throw new BadRequestException('La imagen de perfil es obligatoria');
     // }
-    const { token, usuario } = await this.authService.registro(dto, imagen);
+     const { token, usuario, expiraEnSegundos } = await this.authService.registro(dto, imagen);
     res.cookie('token', token, this.opcionesCookie());
-    return usuario;
+    return { usuario, expiraEnSegundos };
   }
 
   @Post('login')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const { token, usuario } = await this.authService.login(dto);
+    const { token, usuario, expiraEnSegundos } = await this.authService.login(dto);
     res.cookie('token', token, this.opcionesCookie());
-    return usuario;
+    return { usuario, expiraEnSegundos };
   }
 
   @Post('autorizar')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  autorizar(@UsuarioActual() usuario: PayloadToken) {
-    return this.authService.autorizar(usuario.sub);
+  async autorizar(@UsuarioActual() payload: PayloadToken) {
+    const usuario = await this.authService.autorizar(payload.sub);
+    // Lo que le queda al token ACTUAL (no se renueva acá)
+    const expiraEnSegundos = Math.max(0, (payload.exp ?? 0) - Math.floor(Date.now() / 1000));
+    return { usuario, expiraEnSegundos };
   }
 
   @Post('refrescar')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  async refrescar(@UsuarioActual() usuario: PayloadToken, @Res({ passthrough: true }) res: Response) {
-    const { token, usuario: datos } = await this.authService.refrescar(usuario.sub);
+  async refrescar(@UsuarioActual() payload: PayloadToken, @Res({ passthrough: true }) res: Response) {
+    const { token, usuario, expiraEnSegundos } = await this.authService.refrescar(payload.sub);
     res.cookie('token', token, this.opcionesCookie());
-    return datos;
+    return { usuario, expiraEnSegundos };
   }
 
   @Post('cerrar-sesion')
@@ -64,7 +68,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 2,// 
+      maxAge: DURACION_SESION_SEGUNDOS// 
     };
   }
 }

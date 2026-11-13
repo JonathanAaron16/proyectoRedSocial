@@ -5,6 +5,7 @@ import { AuthService } from './auth.service.js';
 import { AuthController } from './auth.controller.js';
 import { UsuariosModule } from '../usuarios/usuarios.module.js';
 import { ImagenesModule } from '../imagenes/imagenes.module.js';
+import { DURACION_SESION_SEGUNDOS } from './constantes.js';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ImagenesModule } from '../imagenes/imagenes.module.js';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: 60 * 2 }, // 15 minutos, en segundos
+        signOptions: { expiresIn: DURACION_SESION_SEGUNDOS }, // 15 minutos, en segundos
       }),
     }),
   ],

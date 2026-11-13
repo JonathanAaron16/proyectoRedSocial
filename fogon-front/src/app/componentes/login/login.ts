@@ -50,8 +50,8 @@ export class Login {
 
     this.enviando.set(true);
     try {
-      const usuario = await this.auth.login(this.modelo());
-      this.sesion.iniciar(usuario);
+      const respuesta = await this.auth.login(this.modelo());
+      this.sesion.iniciar(respuesta);
       this.router.navigate(['/publicaciones']);
     } catch (error) {
       this.modal.error('No pudimos dejarte entrar', mensajeDeError(error));

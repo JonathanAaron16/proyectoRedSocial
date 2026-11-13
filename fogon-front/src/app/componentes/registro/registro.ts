@@ -139,9 +139,9 @@ export class Registro implements OnDestroy {
 
     this.enviando.set(true);
     try {
-      const usuario = await this.auth.registro(datos);
-      this.sesion.iniciar(usuario);
-      await this.modal.exito('¡Bienvenido al fogón!', `Tu cuenta @${usuario.nombreUsuario} está lista.`);
+      const respuesta = await this.auth.registro(datos);
+      this.sesion.iniciar(respuesta);
+      await this.modal.exito('¡Bienvenido al fogón!', `Tu cuenta @${respuesta.usuario.nombreUsuario} está lista.`);
       this.router.navigate(['/publicaciones']);
     } catch (error) {
       this.modal.error('No pudimos crear tu cuenta', mensajeDeError(error));

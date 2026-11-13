@@ -3,7 +3,7 @@ import { Auth } from './auth';
 import { Sesion } from './sesion';
 import { Modal } from './modal';
 
-const AVISO_MS =  20 * 1000; // 10 minutos (el token vence a los 15)
+const MARGEN_AVISO_MS = 5 * 60 * 1000; // avisar 5 minutos antes de que venza
 
 @Injectable({ providedIn: 'root' })
 export class TemporizadorSesion {
@@ -16,15 +16,16 @@ export class TemporizadorSesion {
   constructor() {
     // Cada vez que se inicia (o renueva) la sesión, arranca el contador de cero.
     // Al cerrar sesión, se detiene.
-    effect(() => {
-      const usuario = this.sesion.usuario();
-      untracked(() => (usuario ? this.reiniciar() : this.detener()));
+     effect(() => {
+      const venceEn = this.sesion.venceEn();
+      untracked(() => (venceEn ? this.reiniciar(venceEn) : this.detener()));
     });
   }
 
-  private reiniciar() {
+  private reiniciar(venceEn: number) {
     this.detener();
-    this.temporizador = setTimeout(() => this.avisar(), AVISO_MS);
+    const espera = venceEn - MARGEN_AVISO_MS - Date.now();
+    this.temporizador = setTimeout(() => this.avisar(), Math.max(espera, 0));
   }
 
   private detener() {
@@ -41,8 +42,8 @@ export class TemporizadorSesion {
     if (!extender) return;
 
     try {
-      const usuario = await this.auth.refrescar();
-      this.sesion.iniciar(usuario); // esto reinicia el contador gracias al effect
+      const respuesta  = await this.auth.refrescar();
+      this.sesion.iniciar(respuesta); // esto reinicia el contador gracias al effect
     } catch {
       // Si el token ya venció, el interceptor manda al login
     }
