@@ -68,7 +68,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: DURACION_SESION_SEGUNDOS// 
+      maxAge: DURACION_SESION_SEGUNDOS * 1000// 
     };
   }
 }
