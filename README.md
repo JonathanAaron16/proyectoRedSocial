@@ -4,9 +4,9 @@ Trabajo Práctico 2 — Programación IV (A344).
 
 Red social para scouts: publicar las historias de salidas y campamentos, sumar "leña" (me gusta) y charlar en "la ronda" (comentarios).
 
-- **App:** [completar URL del front]
+- **App:** https://fogonred.vercel.app/login
 - **API:** https://fogon-api.vercel.app
-- **Notas técnicas:** [docs/notas-tecnicas.md](docs/notas-tecnicas.md)
+
 
 ---
 

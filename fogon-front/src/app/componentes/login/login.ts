@@ -50,9 +50,9 @@ export class Login {
 
     this.enviando.set(true);
     try {
-      const respuesta = await this.auth.login(this.modelo());
-      this.sesion.iniciar(respuesta);
-      this.router.navigate(['/publicaciones']);
+            await this.auth.login(this.modelo());
+      // La pantalla de cargando verifica la sesión (autorizar), la inicia y lleva a publicaciones
+      this.router.navigate(['/cargando'], { replaceUrl: true });
     } catch (error) {
       this.modal.error('No pudimos dejarte entrar', mensajeDeError(error));
     } finally {
