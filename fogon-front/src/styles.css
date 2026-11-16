@@ -34,6 +34,8 @@
   --radio-tarjeta: 20px;
   --radio-grande: 32px;
   --radio-pildora: 9999px;
+  --resplandor: rgb(242 113 28 / 0.18);
+  --color-silueta: #110E0A;
 }
 
 /* ============ TEMA CLARO ============ */
@@ -55,6 +57,8 @@
   --color-input-fondo: #FFFFFF;
   --color-input-borde: #CFCAC0;
   --color-input-texto: #1E2330;
+  --resplandor: rgb(242 113 28 / 0.08);
+  --color-silueta: #E6E0D5;
   /* la barra superior queda oscura en los dos temas */
 }
 
