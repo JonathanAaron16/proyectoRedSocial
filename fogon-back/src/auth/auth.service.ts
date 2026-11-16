@@ -1,42 +1,20 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare, hash } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import { UsuariosService } from '../usuarios/usuarios.service.js';
 import { RegistroDto } from './dto/registro.dto.js';
 import { LoginDto } from './dto/login.dto.js';
-import { ImagenesService } from '../imagenes/imagenes.service.js';
 import { DURACION_SESION_SEGUNDOS } from './constantes.js';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
-    private readonly imagenesService: ImagenesService,
     private readonly jwtService: JwtService,
   ) {}
 
-  async registro(dto: RegistroDto, imagen: Express.Multer.File) {
-    await this.usuariosService.verificarDisponible(dto.correo, dto.nombreUsuario);
-    // Encriptar la contraseña antes de guardarla en la base de datos    
-    const passwordEncriptada = await hash(dto.password, 10);
-    //const imagenPerfil = await this.imagenesService.subir(imagen, 'perfiles');
-
-    // Si no se sube una imagen, usar la imagen por defecto
-      const imagenPerfil = imagen
-    ? await this.imagenesService.subir(imagen, 'perfiles')
-    : process.env.IMAGEN_PERFIL_DEFECTO!;
-
-    const usuario = await this.usuariosService.crear({
-      nombre: dto.nombre,
-      apellido: dto.apellido,
-      correo: dto.correo,
-      nombreUsuario: dto.nombreUsuario,
-      password: passwordEncriptada,
-      fechaNacimiento: new Date(dto.fechaNacimiento),
-      descripcion: dto.descripcion ?? '',
-      imagenPerfil,
-    });
-
+  async registro(dto: RegistroDto, imagen?: Express.Multer.File) {
+    const usuario = await this.usuariosService.registrar(dto, imagen);
     return this.armarRespuesta(usuario);
   }
 

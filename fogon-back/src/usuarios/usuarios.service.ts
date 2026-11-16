@@ -1,13 +1,58 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Usuario, type UsuarioDocument } from './schemas/usuario.schema.js';
+import { Model, Types } from 'mongoose';
+import { hash } from 'bcryptjs';
+import { Usuario, type Perfil, type UsuarioDocument } from './schemas/usuario.schema.js';
+import { ImagenesService } from '../imagenes/imagenes.service.js';
+import { RegistroDto } from '../auth/dto/registro.dto.js';
 
 @Injectable()
 export class UsuariosService {
-  constructor(
+   constructor(
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
+    private readonly imagenesService: ImagenesService,
   ) {}
+
+    // Lo usan el registro (perfil "usuario") y el admin (elige el perfil)
+  async registrar(dto: RegistroDto, imagen?: Express.Multer.File, perfil: Perfil = 'usuario') {
+    await this.verificarDisponible(dto.correo, dto.nombreUsuario);
+
+    const passwordEncriptada = await hash(dto.password, 10);
+    const imagenPerfil = imagen
+      ? await this.imagenesService.subir(imagen, 'perfiles')
+      : process.env.IMAGEN_PERFIL_DEFECTO!;
+
+    return this.crear({
+      nombre: dto.nombre,
+      apellido: dto.apellido,
+      correo: dto.correo,
+      nombreUsuario: dto.nombreUsuario,
+      password: passwordEncriptada,
+      fechaNacimiento: new Date(dto.fechaNacimiento),
+      descripcion: dto.descripcion ?? '',
+      imagenPerfil,
+      perfil,
+    });
+  }
+
+  listar() {
+    return this.usuarioModel.find().sort({ createdAt: -1 }).lean();
+  }
+
+  async cambiarEstado(id: Types.ObjectId, activo: boolean, adminId: string) {
+    if (!activo && id.toString() === adminId) {
+      throw new BadRequestException('No podés deshabilitar tu propia cuenta');
+    }
+
+    const usuario = await this.usuarioModel
+      .findByIdAndUpdate(id, { activo }, { returnDocument: 'after' })
+      .lean();
+
+    if (!usuario) {
+      throw new NotFoundException('El usuario no existe');
+    }
+    return usuario;
+  }
 
   async crear(datos: Partial<Usuario>) {
     try {

@@ -7,6 +7,8 @@ import { ImagenesModule } from '../imagenes/imagenes.module.js';
 import { ComentariosController } from './comentarios.controller.js';
 import { ComentariosService } from './comentarios.service.js';
 import { Comentario, ComentarioSchema } from './schemas/comentario.schema.js';
+import { EstadisticasController } from './estadisticas.controller.js';
+import { EstadisticasService } from './estadisticas.service.js';
 
 
 @Module({
@@ -17,7 +19,7 @@ import { Comentario, ComentarioSchema } from './schemas/comentario.schema.js';
     ]),
     ImagenesModule,
   ],
-  controllers: [PublicacionesController, ComentariosController],
-  providers: [PublicacionesService, ComentariosService],
+  controllers: [PublicacionesController, ComentariosController, EstadisticasController],
+  providers: [PublicacionesService, ComentariosService, EstadisticasService],
 })
 export class PublicacionesModule {}
