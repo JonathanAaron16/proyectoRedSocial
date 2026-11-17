@@ -148,3 +148,11 @@
   border-top: 1px solid var(--color-borde);
   margin: 12px 0;
 }
+.titulo-seccion {
+  margin: 16px 16px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-texto-tenue);
+}

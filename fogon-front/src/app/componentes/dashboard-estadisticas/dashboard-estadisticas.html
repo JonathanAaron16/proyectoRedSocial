@@ -1,0 +1,135 @@
+<div class="encabezado">
+  <h1>Estadísticas</h1>
+  <p class="resumen">{{ textoRango() }}</p>
+</div>
+
+<form class="tarjeta filtros" (submit)="aplicar($event)" novalidate>
+  <div class="atajos" role="group" aria-label="Rangos rápidos">
+    @for (dias of atajos; track dias) {
+      <button type="button" class="btn btn-chico btn-secundario"
+              [class.activo]="atajoActivo() === dias" [attr.aria-pressed]="atajoActivo() === dias"
+              [disabled]="cargando()" (click)="usarAtajo(dias)">
+        Últimos {{ dias }} días
+      </button>
+    }
+  </div>
+
+  <div class="fechas">
+    <div class="campo">
+      <label for="desde">Desde</label>
+      <input id="desde" type="date" [max]="hasta() || hoy" [value]="desde()"
+             (input)="desde.set($any($event.target).value)" [class.invalido]="!!errorRango()">
+    </div>
+    <div class="campo">
+      <label for="hasta">Hasta</label>
+      <input id="hasta" type="date" [min]="desde()" [max]="hoy" [value]="hasta()"
+             (input)="hasta.set($any($event.target).value)" [class.invalido]="!!errorRango()">
+    </div>
+    <button type="submit" class="btn btn-primario" [disabled]="cargando() || !!errorRango()">
+      {{ cargando() ? 'Consultando…' : 'Aplicar' }}
+    </button>
+  </div>
+
+  @if (errorRango()) {
+    <div class="error-campo" aria-live="polite">{{ errorRango() }}</div>
+  }
+</form>
+
+@if (error()) {
+  <div class="tarjeta estado-error" role="alert">
+    <p>{{ error() }}</p>
+    <button type="button" class="btn btn-secundario" (click)="consultar()">Reintentar</button>
+  </div>
+}
+
+@if (!listo()) {
+  @if (cargando()) {
+    <p class="estado" aria-live="polite">Contando las brasas…</p>
+  }
+} @else {
+  <div class="contenido" [class.actualizando]="cargando()" [attr.aria-busy]="cargando()">
+
+    <section class="indicadores" aria-label="Resumen del período">
+      <div class="tarjeta indicador">
+        <span class="valor">{{ totalPublicaciones() }}</span>
+        <span class="nombre-indicador">publicaciones</span>
+      </div>
+      <div class="tarjeta indicador">
+        <span class="valor">{{ comentarios().total }}</span>
+        <span class="nombre-indicador">comentarios</span>
+      </div>
+      <div class="tarjeta indicador">
+        <span class="valor">{{ promedioDiario() | number: '1.0-1' }}</span>
+        <span class="nombre-indicador">comentarios por día</span>
+      </div>
+    </section>
+
+    <section class="tarjeta grafico" aria-labelledby="titulo-comentarios">
+      <h2 id="titulo-comentarios">Comentarios por día</h2>
+      @if (comentarios().total) {
+        <app-grafico [config]="configComentarios()"
+                     [descripcion]="'Gráfico de líneas: ' + comentarios().total + ' comentarios en ' + cantidadDias() + ' días'" />
+        <details class="ver-datos">
+          <summary>Ver los datos</summary>
+          <table>
+            <thead><tr><th scope="col">Día</th><th scope="col">Comentarios</th></tr></thead>
+            <tbody>
+              @for (dia of diasConComentarios(); track dia.fecha) {
+                <tr><td>{{ fechaCorta(dia.fecha) }}</td><td>{{ dia.cantidad }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </details>
+      } @else {
+        <p class="vacio">No hubo comentarios en este período.</p>
+      }
+    </section>
+
+    <div class="fila-graficos">
+      <section class="tarjeta grafico" aria-labelledby="titulo-usuarios">
+        <h2 id="titulo-usuarios">Publicaciones por usuario</h2>
+        @if (porUsuario().length) {
+          <app-grafico [style.--alto-grafico.px]="altoBarras()" [config]="configUsuarios()"
+                       [descripcion]="'Gráfico de barras: publicaciones de ' + porUsuario().length + ' usuarios'" />
+          <details class="ver-datos">
+            <summary>Ver los datos</summary>
+            <table>
+              <thead><tr><th scope="col">Usuario</th><th scope="col">Publicaciones</th></tr></thead>
+              <tbody>
+                @for (u of porUsuario(); track u.usuarioId) {
+                  <tr><td>&#64;{{ u.nombreUsuario }}</td><td>{{ u.cantidad }}</td></tr>
+                }
+              </tbody>
+            </table>
+          </details>
+        } @else {
+          <p class="vacio">Nadie publicó en este período.</p>
+        }
+      </section>
+
+      <section class="tarjeta grafico" aria-labelledby="titulo-publicaciones">
+        <div>
+          <h2 id="titulo-publicaciones">Comentarios por publicación</h2>
+          <p class="subtitulo">Las 8 con más comentarios</p>
+        </div>
+        @if (porPublicacion().length) {
+          <app-grafico [config]="configPublicaciones()"
+                       [descripcion]="'Gráfico de dona: comentarios repartidos entre ' + porPublicacion().length + ' publicaciones'" />
+          <details class="ver-datos">
+            <summary>Ver los datos</summary>
+            <table>
+              <thead><tr><th scope="col">Publicación</th><th scope="col">Comentarios</th></tr></thead>
+              <tbody>
+                @for (p of porPublicacion(); track p.publicacionId) {
+                  <tr><td>{{ p.titulo }}</td><td>{{ p.cantidad }}</td></tr>
+                }
+              </tbody>
+            </table>
+          </details>
+        } @else {
+          <p class="vacio">No hubo comentarios en este período.</p>
+        }
+      </section>
+    </div>
+  </div>
+}

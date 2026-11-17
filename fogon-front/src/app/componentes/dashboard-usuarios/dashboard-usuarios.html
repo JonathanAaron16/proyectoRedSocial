@@ -1,0 +1,84 @@
+<div class="encabezado">
+  <div>
+    <h1>Usuarios</h1>
+    <p class="resumen">{{ usuarios().length }} en total · {{ cantidadActivos() }} habilitados</p>
+  </div>
+  <button type="button" class="btn btn-primario" (click)="mostrarFormulario.set(!mostrarFormulario())"
+          [attr.aria-expanded]="mostrarFormulario()">
+    {{ mostrarFormulario() ? 'Cerrar formulario' : 'Nuevo usuario' }}
+  </button>
+</div>
+
+@if (mostrarFormulario()) {
+  <section class="tarjeta nuevo" aria-labelledby="titulo-nuevo">
+    <h2 id="titulo-nuevo">Nuevo usuario</h2>
+    <app-formulario-usuario [mostrarPerfil]="true"
+                            [enviando]="creando()"
+                            textoBoton="Crear usuario"
+                            textoEnviando="Creando usuario…"
+                            (enviar)="crear($event)" />
+  </section>
+}
+
+@if (cargando()) {
+  <p class="estado" aria-live="polite">Juntando a la ronda…</p>
+} @else if (error()) {
+  <div class="tarjeta estado-error">
+    <p>{{ error() }}</p>
+    <button type="button" class="btn btn-secundario" (click)="cargar()">Reintentar</button>
+  </div>
+} @else {
+  <div class="tarjeta tabla-contenedor">
+    <table>
+      <caption class="oculto-visual">Listado de usuarios</caption>
+      <thead>
+        <tr>
+          <th scope="col">Usuario</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Perfil</th>
+          <th scope="col">Alta</th>
+          <th scope="col">Estado</th>
+          <th scope="col"><span class="oculto-visual">Acciones</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (usuario of usuarios(); track usuario._id) {
+          <tr [class.inactivo]="!usuario.activo">
+            <td>
+              <div class="persona">
+                <img [src]="usuario.imagenPerfil" alt="">
+                <div>
+                  <span class="nombre">{{ usuario.nombre }} {{ usuario.apellido }}</span>
+                  <span class="usuario">&#64;{{ usuario.nombreUsuario }}</span>
+                </div>
+              </div>
+            </td>
+            <td>{{ usuario.correo }}</td>
+            <td>
+              <span class="insignia" [class.admin]="usuario.perfil === 'administrador'">
+                {{ usuario.perfil === 'administrador' ? 'Administrador' : 'Usuario' }}
+              </span>
+            </td>
+            <td>{{ usuario.createdAt | date: 'd MMM y' }}</td>
+            <td>
+              <span class="estado-usuario" [class.activo]="usuario.activo">
+                {{ usuario.activo ? 'Habilitado' : 'Deshabilitado' }}
+              </span>
+            </td>
+            <td class="acciones">
+              @if (esYo(usuario)) {
+                <span class="vos">(vos)</span>
+              } @else {
+                <button type="button" class="btn btn-chico"
+                        [class.btn-peligro]="usuario.activo" [class.btn-secundario]="!usuario.activo"
+                        [disabled]="procesando() === usuario._id" (click)="cambiarEstado(usuario)">
+                  {{ usuario.activo ? 'Deshabilitar' : 'Habilitar' }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

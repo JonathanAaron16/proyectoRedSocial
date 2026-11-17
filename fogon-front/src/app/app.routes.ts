@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'cargando', pathMatch: 'full' },
@@ -33,6 +34,18 @@ export const routes: Routes = [
       {
         path: 'mi-perfil',
         loadComponent: () => import('./componentes/mi-perfil/mi-perfil').then(m => m.MiPerfil),
+      },
+      {
+        path: 'dashboard/usuarios',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+          import('./componentes/dashboard-usuarios/dashboard-usuarios').then(m => m.DashboardUsuarios),
+      },
+      {
+        path: 'dashboard/estadisticas',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+          import('./componentes/dashboard-estadisticas/dashboard-estadisticas').then(m => m.DashboardEstadisticas),
       },
     ],
   },

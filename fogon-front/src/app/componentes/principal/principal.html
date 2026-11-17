@@ -41,6 +41,11 @@
   <nav class="nav-lateral" aria-label="Secciones">
     <a routerLink="/publicaciones" routerLinkActive="activo" ariaCurrentWhenActive="page">Publicaciones</a>
     <a routerLink="/mi-perfil" routerLinkActive="activo" ariaCurrentWhenActive="page">Mi perfil</a>
+        @if (sesion.esAdmin()) {
+      <span class="titulo-seccion">Administración</span>
+      <a routerLink="/dashboard/usuarios" routerLinkActive="activo" ariaCurrentWhenActive="page">Usuarios</a>
+      <a routerLink="/dashboard/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">Estadísticas</a>
+    }
     <hr>
     <button type="button" class="tenue" (click)="salir()">Cerrar sesión</button>
   </nav>

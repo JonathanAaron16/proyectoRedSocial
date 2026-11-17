@@ -137,6 +137,9 @@ a { color: var(--color-brasa); }
   color: var(--color-texto);
   border-radius: var(--radio-grande);
   padding: 40px;
+    --color-borde: #CFC6B6;
+  --color-tarjeta-alt: #E7E0D3;
+  --color-texto-tenue: #5F5B53;
 }
 
 /* ============ FORMULARIOS ============ */
