@@ -1,7 +1,7 @@
 <article class="tarjeta publicacion" [class.grande]="enDetalle()">
   <header class="cabecera">
     @if (publicacion().autor.imagenPerfil) {
-      <img class="avatar" [src]="publicacion().autor.imagenPerfil" alt="">
+      <img class="avatar" [src]="publicacion().autor.imagenPerfil" alt="" appImagenRespaldo>
     } @else {
       <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
     }
@@ -29,7 +29,7 @@
   <p class="mensaje">{{ publicacion().mensaje }}</p>
 
   @if (publicacion().imagen) {
-    <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" loading="lazy">
+    <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" loading="lazy" appImagenRespaldo="ocultar">
   }
 
   <footer class="acciones">

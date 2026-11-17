@@ -16,7 +16,7 @@
     <form class="tarjeta nuevo-comentario" (submit)="comentar($event)" novalidate>
       <div class="campo">
         <label for="nuevo-comentario" class="oculto-visual">Escribí un comentario</label>
-        <textarea id="nuevo-comentario" rows="3" placeholder="Sumate a la ronda…"
+        <textarea id="nuevo-comentario" rows="3" placeholder="Sumate a la ronda…" appAutoAltura
                   [value]="nuevoComentario()" (input)="nuevoComentario.set($any($event.target).value)"
                   [class.invalido]="intentoEnviar() && errorNuevo()"></textarea>
       </div>

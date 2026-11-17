@@ -92,7 +92,7 @@
 
   <div class="campo">
     <label for="descripcion">Descripción breve <span class="opcional">(opcional)</span></label>
-    <textarea id="descripcion" rows="3" [formField]="usuarioForm.descripcion"
+    <textarea id="descripcion" rows="3" appAutoAltura [formField]="usuarioForm.descripcion"
               [class.invalido]="usuarioForm.descripcion().touched() && usuarioForm.descripcion().invalid()"></textarea>
     <div class="pie-campo">
       <app-errores-campo [campo]="usuarioForm.descripcion" />

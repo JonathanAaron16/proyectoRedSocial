@@ -1,8 +1,7 @@
 <article class="comentario">
   @if (comentario().autor.imagenPerfil) {
-    <img class="avatar" [src]="comentario().autor.imagenPerfil" alt="">
-  } @else {
-    <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
+    <img class="avatar" [src]="comentario().autor.imagenPerfil" alt="" appImagenRespaldo>
+  
   }
 
   <div class="cuerpo">
@@ -27,7 +26,7 @@
     @if (editando()) {
       <div class="campo">
         <label class="oculto-visual" [attr.for]="'editar-' + comentario()._id">Editar comentario</label>
-        <textarea [id]="'editar-' + comentario()._id" rows="3" [value]="texto()"
+        <textarea [id]="'editar-' + comentario()._id" rows="3" appAutoAltura [value]="texto()" 
                   (input)="texto.set($any($event.target).value)"
                   [class.invalido]="errorTexto()"></textarea>
         @if (errorTexto()) {

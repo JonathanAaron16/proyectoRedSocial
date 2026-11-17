@@ -7,10 +7,11 @@ import { Publicacion } from '../../models/publicacion';
 import { TarjetaPublicacion } from '../tarjeta-publicacion/tarjeta-publicacion';
 import { mensajeDeError } from '../../utils/mensaje-error';
 import { RamaPipe } from '../../pipes/rama-pipe';
+import { ImagenRespaldo } from '../../directivas/imagen-respaldo';
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [DatePipe, RouterLink, TarjetaPublicacion,RamaPipe],
+  imports: [DatePipe, RouterLink, TarjetaPublicacion,RamaPipe,ImagenRespaldo],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })

@@ -26,7 +26,7 @@
   </button>
    <a routerLink="/mi-perfil" class="avatar-barra" aria-label="Mi perfil">
       @if (sesion.usuario()?.imagenPerfil; as foto) {
-        <img [src]="foto" alt="">
+        <img [src]="foto" alt="" appImagenRespaldo>
       } @else {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D9CFBF" stroke-width="1.9"
              stroke-linecap="round" aria-hidden="true">
@@ -41,11 +41,11 @@
   <nav class="nav-lateral" aria-label="Secciones">
     <a routerLink="/publicaciones" routerLinkActive="activo" ariaCurrentWhenActive="page">Publicaciones</a>
     <a routerLink="/mi-perfil" routerLinkActive="activo" ariaCurrentWhenActive="page">Mi perfil</a>
-        @if (sesion.esAdmin()) {
+    <ng-container *appSiEsAdmin>
       <span class="titulo-seccion">Administración</span>
       <a routerLink="/dashboard/usuarios" routerLinkActive="activo" ariaCurrentWhenActive="page">Usuarios</a>
       <a routerLink="/dashboard/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">Estadísticas</a>
-    }
+    </ng-container>
     <hr>
     <button type="button" class="tenue" (click)="salir()">Cerrar sesión</button>
   </nav>

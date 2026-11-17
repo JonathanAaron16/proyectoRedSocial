@@ -5,10 +5,11 @@ import { Publicaciones } from '../../servicios/publicaciones';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
 import { validarImagen } from '../../utils/validar-imagen';
+import { AutoAltura } from '../../directivas/auto-altura';
 
 @Component({
   selector: 'app-nueva-publicacion',
-  imports: [FormField, ErroresCampo],
+  imports: [FormField, ErroresCampo,AutoAltura],
   templateUrl: './nueva-publicacion.html',
   styleUrl: './nueva-publicacion.css',
 })

@@ -10,7 +10,7 @@
 .etiqueta { font-size: 15px; font-weight: 600; }
 .opcional { font-weight: 400; color: var(--color-texto-tenue); }
 
-textarea { resize: vertical; }
+
 .pie-campo { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .contador { margin-left: auto; font-size: 13px; color: var(--color-texto-tenue); }
 

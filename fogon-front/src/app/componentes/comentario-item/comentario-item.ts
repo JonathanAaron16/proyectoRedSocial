@@ -6,10 +6,12 @@ import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
 import { TiempoRelativoPipe } from '../../pipes/tiempo-relativo-pipe';
+import { AutoAltura } from '../../directivas/auto-altura';
+import { ImagenRespaldo } from '../../directivas/imagen-respaldo';
 
 @Component({
   selector: 'app-comentario-item',
-  imports: [DatePipe,TiempoRelativoPipe],
+  imports: [DatePipe,TiempoRelativoPipe,AutoAltura,ImagenRespaldo],
   templateUrl: './comentario-item.html',
   styleUrl: './comentario-item.css',
 })

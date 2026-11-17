@@ -8,10 +8,11 @@ import { mensajeDeError } from '../../utils/mensaje-error';
 import { RouterLink } from '@angular/router';
 import { TiempoRelativoPipe } from '../../pipes/tiempo-relativo-pipe';
 import { PluralPipe } from '../../pipes/plural-pipe';
+import { ImagenRespaldo } from '../../directivas/imagen-respaldo';
 
 @Component({
   selector: 'app-tarjeta-publicacion',
-  imports: [DatePipe, RouterLink,TiempoRelativoPipe, PluralPipe],
+  imports: [DatePipe, RouterLink,TiempoRelativoPipe, PluralPipe,ImagenRespaldo],
   templateUrl: './tarjeta-publicacion.html',
   styleUrl: './tarjeta-publicacion.css',
 })

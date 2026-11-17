@@ -9,12 +9,13 @@ import { Modal } from '../../servicios/modal';
 import { Publicacion } from '../../models/publicacion';
 import { Comentario } from '../../models/comentario';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { AutoAltura } from '../../directivas/auto-altura';
 
 const POR_CARGA = 5;
 
 @Component({
   selector: 'app-detalle-publicacion',
-  imports: [RouterLink, TarjetaPublicacion, ComentarioItem],
+  imports: [RouterLink, TarjetaPublicacion, ComentarioItem,AutoAltura],
   templateUrl: './detalle-publicacion.html',
   styleUrl: './detalle-publicacion.css',
 })

@@ -46,7 +46,7 @@
           <tr [class.inactivo]="!usuario.activo">
             <td>
               <div class="persona">
-                <img [src]="usuario.imagenPerfil" alt="">
+                <img [src]="usuario.imagenPerfil" alt="" appImagenRespaldo>
                   <div>
                   <span class="nombre">{{ usuario.nombre }} {{ usuario.apellido }}</span>
                   <span class="usuario">&#64;{{ usuario.nombreUsuario }} · {{ usuario.fechaNacimiento | rama }}</span>

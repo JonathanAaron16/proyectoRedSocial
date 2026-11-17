@@ -3,6 +3,7 @@ import { form, FormField, required, email, minLength, maxLength, pattern, valida
 import { ErroresCampo } from '../errores-campo/errores-campo';
 import { RegistroData } from '../../models/registro-data';
 import { validarImagen } from '../../utils/validar-imagen';
+import { AutoAltura } from '../../directivas/auto-altura';
 
 type Perfil = 'usuario' | 'administrador';
 
@@ -19,7 +20,7 @@ const MODELO_VACIO: RegistroData = {
 
 @Component({
   selector: 'app-formulario-usuario',
-  imports: [FormField, ErroresCampo],
+  imports: [FormField, ErroresCampo,AutoAltura],
   templateUrl: './formulario-usuario.html',
   styleUrl: './formulario-usuario.css',
 })

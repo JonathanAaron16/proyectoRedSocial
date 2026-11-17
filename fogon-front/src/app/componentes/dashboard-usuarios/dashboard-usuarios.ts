@@ -8,10 +8,11 @@ import { Usuario } from '../../models/usuario';
 import { mensajeDeError } from '../../utils/mensaje-error';
 import { PluralPipe } from '../../pipes/plural-pipe';
 import { RamaPipe } from '../../pipes/rama-pipe';
+import { ImagenRespaldo } from '../../directivas/imagen-respaldo';
 
 @Component({
   selector: 'app-dashboard-usuarios',
-  imports: [DatePipe, FormularioUsuario, PluralPipe,RamaPipe],
+  imports: [DatePipe, FormularioUsuario, PluralPipe,RamaPipe,ImagenRespaldo],
   templateUrl: './dashboard-usuarios.html',
   styleUrl: './dashboard-usuarios.css',
 })

@@ -2,9 +2,7 @@
   <section class="tarjeta perfil">
     <div class="cabecera">
       @if (u.imagenPerfil) {
-        <img class="avatar" [src]="u.imagenPerfil" [alt]="'Foto de perfil de ' + u.nombre">
-      } @else {
-        <div class="avatar avatar-iniciales" aria-hidden="true">{{ iniciales() }}</div>
+        <img class="avatar" [src]="u.imagenPerfil" [alt]="'Foto de perfil de ' + u.nombre" appImagenRespaldo>
       }
       <div class="identidad">
         <h1>{{ u.nombre }} {{ u.apellido }}</h1>

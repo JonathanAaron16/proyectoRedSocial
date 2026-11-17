@@ -4,10 +4,12 @@ import { Tema } from '../../servicios/tema';
 import { Auth } from '../../servicios/auth';
 import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
+import { ImagenRespaldo } from '../../directivas/imagen-respaldo';
+import { SiEsAdmin } from '../../directivas/si-es-admin';
 
 @Component({
   selector: 'app-principal',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive,ImagenRespaldo, SiEsAdmin],
   templateUrl: './principal.html',
   styleUrl: './principal.css',
 })
