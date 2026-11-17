@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Dialogo } from './componentes/dialogo/dialogo';
 import { TemporizadorSesion } from './servicios/temporizador-sesion';
+import { Actualizaciones } from './servicios/actualizaciones';
 
 @Component({
   imports: [RouterOutlet,Dialogo],
@@ -13,4 +14,5 @@ export class App {
   protected readonly title = signal('fogon-front');
   // Se crea al arrancar la app y queda vigilando la sesión todo el tiempo
   private temporizador = inject(TemporizadorSesion);
+  private actualizaciones = inject(Actualizaciones);
 }

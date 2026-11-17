@@ -28,7 +28,7 @@ export class Grafico implements OnDestroy {
     // Se ejecuta después de que Angular actualiza el DOM, cada vez que cambian los datos o el tema
     afterRenderEffect(() => {
       const config = this.config();
-      this.tema.alternar(); // ← usá la señal de tu servicio Tema; solo se lee para redibujar al cambiar de tema
+      this.tema.modo(); // ← usá la señal de tu servicio Tema; solo se lee para redibujar al cambiar de tema
 
       this.aplicarColoresDelTema();
       this.grafico?.destroy();
