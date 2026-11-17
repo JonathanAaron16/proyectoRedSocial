@@ -6,9 +6,12 @@ import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
 import { RouterLink } from '@angular/router';
+import { TiempoRelativoPipe } from '../../pipes/tiempo-relativo-pipe';
+import { PluralPipe } from '../../pipes/plural-pipe';
+
 @Component({
   selector: 'app-tarjeta-publicacion',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink,TiempoRelativoPipe, PluralPipe],
   templateUrl: './tarjeta-publicacion.html',
   styleUrl: './tarjeta-publicacion.css',
 })

@@ -1,7 +1,7 @@
 <div class="encabezado">
   <div>
     <h1>Usuarios</h1>
-    <p class="resumen">{{ usuarios().length }} en total · {{ cantidadActivos() }} habilitados</p>
+        <p class="resumen">{{ usuarios().length | plural: 'usuario' }} · {{ cantidadActivos() | plural: 'habilitado' }}</p>
   </div>
   <button type="button" class="btn btn-primario" (click)="mostrarFormulario.set(!mostrarFormulario())"
           [attr.aria-expanded]="mostrarFormulario()">
@@ -47,9 +47,9 @@
             <td>
               <div class="persona">
                 <img [src]="usuario.imagenPerfil" alt="">
-                <div>
+                  <div>
                   <span class="nombre">{{ usuario.nombre }} {{ usuario.apellido }}</span>
-                  <span class="usuario">&#64;{{ usuario.nombreUsuario }}</span>
+                  <span class="usuario">&#64;{{ usuario.nombreUsuario }} · {{ usuario.fechaNacimiento | rama }}</span>
                 </div>
               </div>
             </td>

@@ -6,10 +6,11 @@ import { Publicaciones } from '../../servicios/publicaciones';
 import { Publicacion } from '../../models/publicacion';
 import { TarjetaPublicacion } from '../tarjeta-publicacion/tarjeta-publicacion';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { RamaPipe } from '../../pipes/rama-pipe';
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [DatePipe, RouterLink, TarjetaPublicacion],
+  imports: [DatePipe, RouterLink, TarjetaPublicacion,RamaPipe],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })

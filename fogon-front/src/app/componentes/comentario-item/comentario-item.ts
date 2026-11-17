@@ -5,10 +5,11 @@ import { Comentarios } from '../../servicios/comentarios';
 import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { TiempoRelativoPipe } from '../../pipes/tiempo-relativo-pipe';
 
 @Component({
   selector: 'app-comentario-item',
-  imports: [DatePipe],
+  imports: [DatePipe,TiempoRelativoPipe],
   templateUrl: './comentario-item.html',
   styleUrl: './comentario-item.css',
 })

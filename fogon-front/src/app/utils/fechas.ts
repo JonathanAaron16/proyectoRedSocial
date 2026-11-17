@@ -1,3 +1,15 @@
+// La fecha de nacimiento se guarda a medianoche UTC: se leen sus partes en UTC
+// para que no "retroceda" un día por la diferencia horaria (igual que el date: 'UTC' de Mi perfil)
+export function calcularEdad(fechaNacimiento: string | Date): number {
+  const nacimiento = new Date(fechaNacimiento);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nacimiento.getUTCFullYear();
+  const mes = nacimiento.getUTCMonth();
+  const yaCumplio = hoy.getMonth() > mes || (hoy.getMonth() === mes && hoy.getDate() >= nacimiento.getUTCDate());
+  if (!yaCumplio) edad--;
+  return edad;
+}
+
 // 'YYYY-MM-DD' en hora local.
 // No se usa toISOString() porque devuelve la fecha en UTC: después de las 21 h en Argentina ya sería "mañana".
 export function aIso(fecha: Date): string {

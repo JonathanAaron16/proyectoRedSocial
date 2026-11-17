@@ -9,8 +9,11 @@
     <div class="cabecera">
       <div class="autor">
         <span class="nombre">{{ comentario().autor.nombre }} {{ comentario().autor.apellido }}</span>
-        <span class="meta">
-          &#64;{{ comentario().autor.nombreUsuario }} · {{ comentario().createdAt | date: "d MMM y, HH:mm" }}
+          <span class="meta">
+          &#64;{{ comentario().autor.nombreUsuario }} ·
+          <time [attr.datetime]="comentario().createdAt" [title]="comentario().createdAt | date: 'd MMM y, HH:mm'">
+            {{ comentario().createdAt | tiempoRelativo }}
+          </time>
           @if (comentario().modificado) {
             · <span class="editado">editado</span>
           }

@@ -31,6 +31,10 @@
         <dd>{{ u.fechaNacimiento | date: 'longDate' : 'UTC' }}</dd>
       </div>
       <div>
+        <dt>Rama</dt>
+        <dd>{{ u.fechaNacimiento | rama: true }}</dd>
+      </div>
+      <div>
         <dt>Miembro desde</dt>
         <dd>{{ u.createdAt | date: 'MMMM y' }}</dd>
       </div>

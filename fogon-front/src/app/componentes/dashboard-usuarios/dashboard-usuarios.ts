@@ -6,10 +6,12 @@ import { Sesion } from '../../servicios/sesion';
 import { Modal } from '../../servicios/modal';
 import { Usuario } from '../../models/usuario';
 import { mensajeDeError } from '../../utils/mensaje-error';
+import { PluralPipe } from '../../pipes/plural-pipe';
+import { RamaPipe } from '../../pipes/rama-pipe';
 
 @Component({
   selector: 'app-dashboard-usuarios',
-  imports: [DatePipe, FormularioUsuario],
+  imports: [DatePipe, FormularioUsuario, PluralPipe,RamaPipe],
   templateUrl: './dashboard-usuarios.html',
   styleUrl: './dashboard-usuarios.css',
 })
